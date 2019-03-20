@@ -14,27 +14,33 @@ class User
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
-    private $firstName;
+    protected $firstName;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
-    private $lastName;
+    protected $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $password;
+    protected $password;
 
     /**
      * @ORM\Column(type="string", length=255,  unique=true)
      */
-    private $email;
+    protected $email;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    protected $lastAccessTime;
 
     public function getId(): ?int
     {
@@ -105,5 +111,17 @@ class User
     private function hashPassword($password)
     {
         return password_hash($password, PASSWORD_BCRYPT);
+    }
+
+    public function getLastAccessTime(): ?\DateTimeInterface
+    {
+        return $this->lastAccessTime;
+    }
+
+    public function setLastAccessTime(?\DateTimeInterface $lastAccessTime): self
+    {
+        $this->lastAccessTime = $lastAccessTime;
+
+        return $this;
     }
 }
