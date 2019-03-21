@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class HttpBadRequestException
  * @package App\Exception
  */
-class HttpBadRequestException extends Exception implements ApiExceptionInterface
+class HttpBadRequestException extends Exception
 {
     /**
      * @param array $message

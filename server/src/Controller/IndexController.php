@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Exception\HttpNotFoundException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends BaseController
@@ -12,6 +12,6 @@ class IndexController extends BaseController
      */
     public function index()
     {
-        return new JsonResponse('Route not found', 404);
+        throw new HttpNotFoundException('Route not found');
     }
 }

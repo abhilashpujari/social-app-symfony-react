@@ -7,6 +7,6 @@ use Exception;
  * Class ApiException
  * @package App\Exception
  */
-class ApiException extends Exception implements ApiExceptionInterface
+class ApiException extends Exception
 {
 }

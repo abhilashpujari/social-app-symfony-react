@@ -2,13 +2,12 @@
 namespace App\Exception;
 
 use Exception;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class HttpAuthenticationTimeoutException
  * @package App\Exception
  */
-class HttpAuthenticationTimeoutException extends Exception implements ApiExceptionInterface
+class HttpAuthenticationTimeoutException extends Exception
 {
     /**
      * @param null $message

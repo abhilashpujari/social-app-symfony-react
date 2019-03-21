@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class HttpNotFoundException
  * @package App\Exception
  */
-class HttpNotFoundException extends Exception implements ApiExceptionInterface
+class HttpNotFoundException extends Exception
 {
     /**
      * @param null $message

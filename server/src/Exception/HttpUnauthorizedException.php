@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class HttpUnauthorizedException
  * @package App\Exception
  */
-class HttpUnauthorizedException extends Exception implements ApiExceptionInterface
+class HttpUnauthorizedException extends Exception
 {
     /**
      * @param null $message

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class HttpForbiddenException
  * @package App\Exception
  */
-class HttpForbiddenException extends Exception implements ApiExceptionInterface
+class HttpForbiddenException extends Exception
 {
     /**
      * @param null $message

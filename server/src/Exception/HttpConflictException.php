@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Class HttpConflictException
  * @package App\Exception
  */
-class HttpConflictException extends Exception implements ApiExceptionInterface
+class HttpConflictException extends Exception
 {
     /**
      * @param null $message

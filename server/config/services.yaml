@@ -28,5 +28,7 @@ services:
 
     social_app.api_exception:
         class: App\EventListener\ApiExceptionListener
+        arguments:
+            - '@monolog.logger.api'
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
