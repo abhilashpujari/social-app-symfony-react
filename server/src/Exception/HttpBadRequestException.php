@@ -5,10 +5,10 @@ use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class BadRequestException
+ * Class HttpBadRequestException
  * @package App\Exception
  */
-class BadRequestException extends Exception implements ApiExceptionInterface
+class HttpBadRequestException extends Exception implements ApiExceptionInterface
 {
     /**
      * @param array $message

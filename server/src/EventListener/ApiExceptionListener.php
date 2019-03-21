@@ -28,15 +28,19 @@ class ApiExceptionListener
      */
     private function buildResponseData(ApiExceptionInterface $exception)
     {
-        $messages = json_decode($exception->getMessage());
-        if (!is_array($messages)) {
-            $messages = $exception->getMessage() ? [$exception->getMessage()] : [];
+        if (is_string($exception->getMessage())) {
+            $message = $exception->getMessage();
+        } elseif (is_array($exception->getMessage())) {
+            $message = $exception->getMessage() ? $exception->getMessage()[0] : 'An Error Occured';
+        } else {
+            $message = 'An Error Occured';
         }
 
         return [
             'error' => [
                 'code' => $exception->getCode(),
-                'messages' => $messages
-            ]];
+                'message' => $message
+            ]
+        ];
     }
 }

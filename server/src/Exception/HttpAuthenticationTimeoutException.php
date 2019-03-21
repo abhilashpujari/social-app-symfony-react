@@ -5,16 +5,16 @@ use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class NotFoundException
+ * Class HttpAuthenticationTimeoutException
  * @package App\Exception
  */
-class NotFoundException extends Exception implements ApiExceptionInterface
+class HttpAuthenticationTimeoutException extends Exception implements ApiExceptionInterface
 {
     /**
      * @param null $message
      */
     public function __construct($message = null)
     {
-        parent::__construct($message, Response::HTTP_NOT_FOUND);
+        parent::__construct($message, 419);
     }
 }
