@@ -31,9 +31,7 @@ class ApiExceptionListener
 
     private function log(Exception $e)
     {
-        $errorCode = ($e->getCode() !== 0) ? $e->getCode() : 500;
-
-        switch ($errorCode) {
+        switch ($e->getCode()) {
             case 208:
                 // Accepted but not completed
                 $this->logger->notice('[208] ' . $e->getMessage());
