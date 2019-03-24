@@ -1,10 +1,12 @@
 <?php
 namespace App\Controller;
 
+use App\Exception\ValidationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class BaseController
@@ -12,14 +14,33 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class BaseController extends AbstractController
 {
-    public function __construct()
+    /** @var  ValidatorInterface $validator */
+    protected $validator;
+
+    public function __construct(
+        ValidatorInterface $validator
+    )
     {
+        $this->validator =  $validator;
         $this->init();
     }
 
-    public function init()
+    protected function init()
     {
+    }
 
+    protected function validate($entity)
+    {
+        $errors = [];
+        foreach ($this->validator->validate($entity) as $error) {
+            $errors[$error->getPropertyPath()] = $error->getMessage();
+        };
+
+        if (count($errors) > 0) {
+            throw new ValidationException($errors);
+        }
+
+        return true;
     }
 
     /**

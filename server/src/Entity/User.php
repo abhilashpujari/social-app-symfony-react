@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -10,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
     /**
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
@@ -18,6 +20,7 @@ class User
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
+     *
      */
     protected $firstName;
 
@@ -33,6 +36,10 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255,  unique=true)
+     *
+     * @Assert\Email(
+     *     message = "email must be a valid email address"
+     * )
      */
     protected $email;
 
