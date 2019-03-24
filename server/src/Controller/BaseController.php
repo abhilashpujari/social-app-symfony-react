@@ -29,8 +29,15 @@ class BaseController extends AbstractController
     {
     }
 
-    protected function validate($entity)
+    protected function validate($entity, $requestData = [])
     {
+        foreach ($requestData as $property => $value) {
+            $method = 'set' . ucfirst($property);
+            if (method_exists($entity, $method)) {
+                $entity->$method($value);
+            }
+        }
+
         $errors = [];
         foreach ($this->validator->validate($entity) as $error) {
             $errors[$error->getPropertyPath()] = $error->getMessage();

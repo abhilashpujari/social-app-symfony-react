@@ -51,10 +51,11 @@ class UserController extends BaseController
         }
 
         $user = new User();
+
+        $this->validate($user, $requestData);
+
         $user->setEmail($requestData->email);
         $user->setPassword($requestData->password);
-
-        $this->validate($user);
 
         $em->persist($user);
         $em->flush();
