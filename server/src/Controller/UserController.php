@@ -9,6 +9,7 @@ use App\Exception\ValidationException;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class UserController
@@ -21,6 +22,7 @@ class UserController extends BaseController
      *
      * @Route("/user", methods={"POST"})
      *
+     * @param SerializerInterface $serializer
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @throws HttpConflictException
      * @throws UniqueValueException
@@ -33,7 +35,7 @@ class UserController extends BaseController
      * @SWG\Tag(name="User")
      *
      */
-    public function register()
+    public function register(SerializerInterface $serializer)
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
@@ -50,12 +52,9 @@ class UserController extends BaseController
             throw new UniqueValueException('User already exists');
         }
 
-        $user = new User();
+        $user = $this->deserialize($requestData, User::class);
 
-        $this->validate($user, $requestData);
-
-        $user->setEmail($requestData->email);
-        $user->setPassword($requestData->password);
+        $this->validate($user);
 
         $em->persist($user);
         $em->flush();

@@ -32,3 +32,10 @@ services:
             - '@monolog.logger.api'
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    App\Normalizer\EntityNormalizer:
+        public: false
+        autowire: true
+        autoconfigure: true
+        tags:
+          - { name: serializer.normalizer }

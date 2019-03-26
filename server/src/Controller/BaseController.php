@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,10 +18,15 @@ class BaseController extends AbstractController
     /** @var  ValidatorInterface $validator */
     protected $validator;
 
+    /** @var SerializerInterface $deserialize */
+    protected $deserialize;
+
     public function __construct(
+        SerializerInterface $deserialize,
         ValidatorInterface $validator
     )
     {
+        $this->deserialize = $deserialize;
         $this->validator =  $validator;
         $this->init();
     }
@@ -29,15 +35,8 @@ class BaseController extends AbstractController
     {
     }
 
-    protected function validate($entity, $requestData = [])
+    protected function validate($entity)
     {
-        foreach ($requestData as $property => $value) {
-            $method = 'set' . ucfirst($property);
-            if (method_exists($entity, $method)) {
-                $entity->$method($value);
-            }
-        }
-
         $errors = [];
         foreach ($this->validator->validate($entity) as $error) {
             $errors[$error->getPropertyPath()] = $error->getMessage();
@@ -48,6 +47,21 @@ class BaseController extends AbstractController
         }
 
         return true;
+    }
+
+    /**
+     * @param $data
+     * @param $class
+     * @param string $format
+     * @return object
+     */
+    protected function deserialize($data, $class, $format = 'json')
+    {
+        $data = is_object($data) || is_array($data)
+            ? json_encode($data)
+            : $data;
+
+        return $this->deserialize->deserialize($data, $class, $format);
     }
 
     /**
