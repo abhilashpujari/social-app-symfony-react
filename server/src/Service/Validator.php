@@ -19,7 +19,7 @@ class Validator
      * @param bool|true $isRequired
      * @return $this
      */
-    public function setValidator($validator, $key, $message, $isRequired = true)
+    public function setValidator($validator, $key, $message, $isRequired = false)
     {
         $validation = new \stdClass;
         $validation->validator = $validator;

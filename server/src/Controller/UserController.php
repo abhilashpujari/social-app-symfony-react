@@ -48,12 +48,14 @@ class UserController extends BaseController
             ->setValidator(
                 v::notEmpty()->email(),
                 'email',
-                'email must be a valid email address'
+                'email must be a valid email address',
+                true
             )
             ->setValidator(
                 v::stringType()->notEmpty()->length(3),
                 'password',
-                'password must be a string type with minimum length of 3'
+                'password must be a string type with minimum length of 3',
+                true
             )
             ->validate($requestData);
 
