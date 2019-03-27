@@ -35,10 +35,10 @@ class BaseController extends AbstractController
     {
     }
 
-    protected function validate($entity)
+    protected function validate($entity, $groups = null, $constraints = null)
     {
         $errors = [];
-        foreach ($this->validator->validate($entity) as $error) {
+        foreach ($this->validator->validate($entity, $constraints, $groups) as $error) {
             $errors[$error->getPropertyPath()] = $error->getMessage();
         };
 

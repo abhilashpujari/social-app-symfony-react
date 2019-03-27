@@ -8,6 +8,7 @@
         "doctrine/annotations": "^1.6",
         "nelmio/api-doc-bundle": "^3.4",
         "nelmio/cors-bundle": "^1.5",
+        "respect/validation": "^1.1",
         "symfony/asset": "4.2.*",
         "symfony/console": "4.2.*",
         "symfony/dotenv": "4.2.*",

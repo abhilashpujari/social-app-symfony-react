@@ -6,10 +6,12 @@ use App\Entity\User;
 use App\Exception\HttpConflictException;
 use App\Exception\UniqueValueException;
 use App\Exception\ValidationException;
+use App\Service\Validator;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Serializer\SerializerInterface;
+use Respect\Validation\Validator as v;
 
 /**
  * Class UserController
@@ -23,6 +25,7 @@ class UserController extends BaseController
      * @Route("/user", methods={"POST"})
      *
      * @param SerializerInterface $serializer
+     * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @throws HttpConflictException
      * @throws UniqueValueException
@@ -35,15 +38,24 @@ class UserController extends BaseController
      * @SWG\Tag(name="User")
      *
      */
-    public function register(SerializerInterface $serializer)
+    public function register(SerializerInterface $serializer, Validator $validator)
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         $requestData = $this->getRequestContent();
 
-        if (!isset($requestData->email) || !isset($requestData->password)) {
-            throw new HttpConflictException('email and password field is required');
-        }
+        $validator
+            ->setValidator(
+                v::notEmpty()->email(),
+                'email',
+                'email must be a valid email address'
+            )
+            ->setValidator(
+                v::stringType()->notEmpty()->length(3),
+                'password',
+                'password must be a string type with minimum length of 3'
+            )
+            ->validate($requestData);
 
         $user = $em->getRepository(User::class)
             ->findOneBy(['email' => $requestData->email]);
@@ -53,8 +65,6 @@ class UserController extends BaseController
         }
 
         $user = $this->deserialize($requestData, User::class);
-
-        $this->validate($user);
 
         $em->persist($user);
         $em->flush();

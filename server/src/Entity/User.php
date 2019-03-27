@@ -37,9 +37,6 @@ class User
     /**
      * @ORM\Column(type="string", length=255,  unique=true)
      *
-     * @Assert\Email(
-     *     message = "email must be a valid email address"
-     * )
      */
     protected $email;
 
