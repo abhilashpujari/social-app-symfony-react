@@ -78,7 +78,12 @@ class ApiExceptionListener
                 break;
             default:
                 // Internal Server Error
-                $this->logger->error('[500] ' . $e->getMessage());
+                $this->logger->error(
+                    '[500] ' . $e->getMessage(),
+                    [
+                        'Stack Trace' => "\n" . $e->getTraceAsString()
+                    ]
+                );
         }
 
     }
