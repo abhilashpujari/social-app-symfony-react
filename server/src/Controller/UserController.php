@@ -10,7 +10,6 @@ use App\Service\Validator;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
-use Symfony\Component\Serializer\SerializerInterface;
 use Respect\Validation\Validator as v;
 
 /**
@@ -24,12 +23,12 @@ class UserController extends BaseController
      *
      * @Route("/user", methods={"POST"})
      *
-     * @param SerializerInterface $serializer
      * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @throws HttpConflictException
      * @throws UniqueValueException
      * @throws ValidationException
+     * @throws \App\Exception\HttpBadRequestException
      *
      * @SWG\Response(
      *     response=200,
@@ -38,7 +37,7 @@ class UserController extends BaseController
      * @SWG\Tag(name="User")
      *
      */
-    public function register(SerializerInterface $serializer, Validator $validator)
+    public function register(Validator $validator)
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();

@@ -16,7 +16,7 @@ class HttpBadRequestException extends Exception
      * @param Exception|null $previous
      */
     public function __construct(
-        array $message = [],
+        $message,
         $code = Response::HTTP_BAD_REQUEST,
         Exception $previous = null
     ) {
