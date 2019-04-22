@@ -10,6 +10,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User
 {
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_USER = 'ROLE_USER';
+
+    /**
+     * @ORM\Column(type="string", length=255,  unique=true)
+     *
+     */
+    protected $email;
+
+    /**
+     * @ORM\Column(type="string", length=45, nullable=true)
+     *
+     */
+    protected $firstName;
+
     /**
      *
      * @ORM\Id()
@@ -20,14 +35,14 @@ class User
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
-     *
-     */
-    protected $firstName;
-
-    /**
-     * @ORM\Column(type="string", length=45, nullable=true)
      */
     protected $lastName;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    protected $lastAccessTime;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -35,16 +50,9 @@ class User
     protected $password;
 
     /**
-     * @ORM\Column(type="string", length=255,  unique=true)
-     *
+     * @ORM\Column(type="json")
      */
-    protected $email;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @var \DateTime
-     */
-    protected $lastAccessTime;
+    protected $roles = [];
 
     public function getId(): ?int
     {
@@ -61,6 +69,11 @@ class User
         $this->firstName = $firstName;
 
         return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->firstName . ' ' . $this->lastName;
     }
 
     public function getLastName(): ?string
@@ -127,5 +140,19 @@ class User
         $this->lastAccessTime = $lastAccessTime;
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        if (empty($roles)) {
+            $roles[] = self::ROLE_USER;
+        }
+        return array_unique($roles);
+    }
+
+	public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
     }
 }

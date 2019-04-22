@@ -69,16 +69,17 @@ class BaseController extends AbstractController
      * @param int $statusCode
      * @param array $headers
      * @param string $format
+     * @param array $context
      * @return JsonResponse|Response
      */
-    protected function setResponse($content = null, $statusCode = 200, $headers = array(), $format = 'json')
+    protected function setResponse($content = null, $statusCode = 200, $headers = array(), $context = [], $format = 'json')
     {
         /** @var Request $request */
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $accept = $request->getAcceptableContentTypes();
 
         if (in_array('application/json', $accept) || $format == 'json') {
-            $response = new JsonResponse($content, $statusCode, $headers);
+            $response = $this->json($content, $statusCode, $headers, $context);
         } else {
             $response = new Response($content, $statusCode, $headers);
         }
