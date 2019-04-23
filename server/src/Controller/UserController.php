@@ -81,9 +81,7 @@ class UserController extends BaseController
             'roles' => $user->getRoles()
         ]);
 
-        return $this->setResponse([
-            'token' => $token
-        ]);
+        return $this->setResponse(['token' => $token], 200, ['X-AUTH-TOKEN' => $token]);
     }
 
 

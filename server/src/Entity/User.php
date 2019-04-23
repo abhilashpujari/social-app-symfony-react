@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User
 {
     const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_GUEST = 'ROLE_GUEST';
     const ROLE_USER = 'ROLE_USER';
 
     /**

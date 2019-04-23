@@ -2,12 +2,14 @@
 namespace App\Controller;
 
 use App\Exception\ValidationException;
+use App\Service\Auth;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage;
 
 /**
  * Class BaseController
@@ -21,13 +23,20 @@ class BaseController extends AbstractController
     /** @var SerializerInterface $deserialize */
     protected $deserialize;
 
+    /**
+     * @var Auth $auth
+     */
+    protected $auth;
+
     public function __construct(
         SerializerInterface $deserialize,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        Auth $auth
     )
     {
         $this->deserialize = $deserialize;
         $this->validator =  $validator;
+        $this->auth = $auth;
         $this->init();
     }
 
@@ -84,7 +93,21 @@ class BaseController extends AbstractController
             $response = new Response($content, $statusCode, $headers);
         }
 
+        /** @var Auth $identity */
+        $identity = $this->getIdentity();
+        if ($identity->isAuthenticated()) {
+            $response->headers->set('X-AUTH-TOKEN', $identity->getToken());
+        }
+
         return $response;
+    }
+
+    /**
+     * @return Auth
+     */
+    protected function getIdentity()
+    {
+        return $this->auth;
     }
 
     /**
