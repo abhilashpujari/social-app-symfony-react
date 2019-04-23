@@ -28,6 +28,11 @@ class BaseController extends AbstractController
      */
     protected $auth;
 
+    /**
+     * @param SerializerInterface $deserialize
+     * @param ValidatorInterface $validator
+     * @param Auth $auth
+     */
     public function __construct(
         SerializerInterface $deserialize,
         ValidatorInterface $validator,
@@ -44,6 +49,13 @@ class BaseController extends AbstractController
     {
     }
 
+    /**
+     * @param $entity
+     * @param null $groups
+     * @param null $constraints
+     * @return bool
+     * @throws ValidationException
+     */
     protected function validate($entity, $groups = null, $constraints = null)
     {
         $errors = [];
@@ -81,7 +93,7 @@ class BaseController extends AbstractController
      * @param array $context
      * @return JsonResponse|Response
      */
-    protected function setResponse($content = null, $statusCode = 200, $headers = array(), $context = [], $format = 'json')
+    protected function setResponse($content = null, $statusCode = 200, $headers = [], $context = [], $format = 'json')
     {
         /** @var Request $request */
         $request = $this->container->get('request_stack')->getCurrentRequest();

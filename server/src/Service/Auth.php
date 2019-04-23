@@ -13,11 +13,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class Auth
 {
     /**
-     * @var
+     * @var string
      */
     protected $createdAt;
     /**
-     * @var
+     * @var string
      */
     protected $expiresAt;
     /**
