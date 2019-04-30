@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
 use Respect\Validation\Validator as v;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
  * Class UserController
