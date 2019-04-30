@@ -115,7 +115,12 @@ class UserController extends BaseController
             'roles' => $user->getRoles()
         ]);
 
-        return $this->setResponse(['token' => $token], 200, ['X-AUTH-TOKEN' => $token]);
+        $user->setLastAccessTime(new \DateTime('now'));
+
+        $em->persist($user);
+        $em->flush();
+
+        return $this->setResponse('Authenticated successfully', 200, ['X-AUTH-TOKEN' => $token]);
     }
 
 

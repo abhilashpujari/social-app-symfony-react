@@ -20,8 +20,8 @@ class BaseController extends AbstractController
     /** @var  ValidatorInterface $validator */
     protected $validator;
 
-    /** @var SerializerInterface $deserialize */
-    protected $deserialize;
+    /** @var SerializerInterface $serializer */
+    protected $serializer;
 
     /**
      * @var Auth $auth
@@ -29,17 +29,17 @@ class BaseController extends AbstractController
     protected $auth;
 
     /**
-     * @param SerializerInterface $deserialize
+     * @param SerializerInterface $serializer
      * @param ValidatorInterface $validator
      * @param Auth $auth
      */
     public function __construct(
-        SerializerInterface $deserialize,
+        SerializerInterface $serializer,
         ValidatorInterface $validator,
         Auth $auth
     )
     {
-        $this->deserialize = $deserialize;
+        $this->serializer = $serializer;
         $this->validator =  $validator;
         $this->auth = $auth;
         $this->init();
@@ -82,7 +82,7 @@ class BaseController extends AbstractController
             ? json_encode($data)
             : $data;
 
-        return $this->deserialize->deserialize($data, $class, $format);
+        return $this->serializer->deserialize($data, $class, $format);
     }
 
     /**

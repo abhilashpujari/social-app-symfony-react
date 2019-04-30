@@ -131,9 +131,11 @@ class User
         return password_hash($password, PASSWORD_BCRYPT);
     }
 
-    public function getLastAccessTime(): ?\DateTimeInterface
+    public function getLastAccessTime(): ?string
     {
-        return $this->lastAccessTime;
+        return $this->lastAccessTime
+            ? $this->lastAccessTime->format('c')
+            : null;
     }
 
     public function setLastAccessTime(?\DateTimeInterface $lastAccessTime): self
