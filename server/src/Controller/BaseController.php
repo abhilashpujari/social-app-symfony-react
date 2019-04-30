@@ -73,16 +73,17 @@ class BaseController extends AbstractController
     /**
      * @param $data
      * @param $class
+     * @param array $context
      * @param string $format
      * @return object
      */
-    protected function deserialize($data, $class, $format = 'json')
+    protected function deserialize($data, $class, $context = [], $format = 'json')
     {
         $data = is_object($data) || is_array($data)
             ? json_encode($data)
             : $data;
 
-        return $this->serializer->deserialize($data, $class, $format);
+        return $this->serializer->deserialize($data, $class, $format, $context);
     }
 
     /**

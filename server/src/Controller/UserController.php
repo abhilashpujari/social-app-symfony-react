@@ -55,7 +55,7 @@ class UserController extends BaseController
                 true
             )
             ->setValidator(
-                v::noWhitespace()->notEmpty()->length(3),
+                v::stringType()->noWhitespace()->notEmpty()->length(3),
                 'password',
                 'password must be a string type with minimum length of 3',
                 true
@@ -123,7 +123,7 @@ class UserController extends BaseController
                 true
             )
             ->setValidator(
-                v::noWhitespace()->notEmpty()->length(3),
+                v::stringType()->noWhitespace()->notEmpty()->length(3),
                 'password',
                 'password must be a string type with minimum length of 3',
                 true
@@ -138,7 +138,10 @@ class UserController extends BaseController
             throw new UniqueValueException('User already exists');
         }
 
-        $user = $this->deserialize($requestData, User::class);
+        $user = $this->deserialize($requestData, User::class, [
+            AbstractNormalizer::IGNORED_ATTRIBUTES => ['roles', 'lastAccessTime']
+        ]);
+
         $user->setRoles([User::ROLE_USER]);
 
         $em->persist($user);
