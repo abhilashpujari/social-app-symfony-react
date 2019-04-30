@@ -7,7 +7,6 @@ use App\Exception\HttpConflictException;
 use App\Exception\HttpUnauthorizedException;
 use App\Exception\UniqueValueException;
 use App\Exception\ValidationException;
-use App\Service\Auth;
 use App\Service\Validator;
 use Doctrine\ORM\EntityManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
@@ -50,13 +49,13 @@ class UserController extends BaseController
 
         $validator
             ->setValidator(
-                v::notEmpty()->email(),
+                v::noWhitespace()->notEmpty()->email(),
                 'email',
                 'email must be a valid email address',
                 true
             )
             ->setValidator(
-                v::stringType()->notEmpty()->length(3),
+                v::noWhitespace()->notEmpty()->length(3),
                 'password',
                 'password must be a string type with minimum length of 3',
                 true
@@ -118,13 +117,13 @@ class UserController extends BaseController
 
         $validator
             ->setValidator(
-                v::notEmpty()->email(),
+                v::noWhitespace()->notEmpty()->email(),
                 'email',
                 'email must be a valid email address',
                 true
             )
             ->setValidator(
-                v::stringType()->notEmpty()->length(3),
+                v::noWhitespace()->notEmpty()->length(3),
                 'password',
                 'password must be a string type with minimum length of 3',
                 true
