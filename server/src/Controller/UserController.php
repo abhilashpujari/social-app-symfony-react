@@ -23,39 +23,6 @@ use Respect\Validation\Validator as v;
 class UserController extends BaseController
 {
     /**
-     * User Profile
-     *
-     * @Route("/account", methods={"GET"})
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
-     *
-     * @SWG\Response(
-     *     response=200,
-     *     description="Get user account info"
-     * )
-     * @SWG\Tag(name="User")
-     *
-     */
-    public function account()
-    {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
-
-        /** @var Auth $identity */
-        $identity = $this->getIdentity();
-
-        /** @var User $user */
-        $user = $em->getRepository(User::class)
-            ->find($identity->getId());
-
-        if (!$user) {
-            throw new NotFoundHttpException('User not found!!');
-        }
-
-        return $this->setResponse($user, 200, []);
-    }
-
-    /**
      * Authenticate User
      *
      * @Route("/authenticate", methods={"POST"})
