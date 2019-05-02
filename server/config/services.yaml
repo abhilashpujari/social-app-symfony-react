@@ -39,6 +39,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
+    sociapp.mailer:
+        class:     App\Service\Mailer
+        arguments: ["@mailer", "@twig"]
+
     App\Normalizer\EntityNormalizer:
         public: false
         autowire: true

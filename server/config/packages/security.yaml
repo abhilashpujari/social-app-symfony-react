@@ -34,5 +34,7 @@ security:
     access_control:
        - { path: ^/v1.0/authenticate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
        - { path: ^/v1.0/docs, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+       - { path: ^/v1.0/forgot-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
        - { path: ^/v1.0/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+       - { path: ^/v1.0/update-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
        - { path: ^/v1.0, roles: IS_AUTHENTICATED_FULLY }
