@@ -35,7 +35,7 @@ class AccountController extends BaseController
      *     response=200,
      *     description="Update user account info"
      * )
-     * @SWG\Tag(name="User")
+     * @SWG\Tag(name="Account")
      *
      */
     public function update(Request $request, Validator $validator)
@@ -100,7 +100,7 @@ class AccountController extends BaseController
      *     response=200,
      *     description="Get user account info"
      * )
-     * @SWG\Tag(name="User")
+     * @SWG\Tag(name="Account")
      *
      */
     public function view(Request $request)
