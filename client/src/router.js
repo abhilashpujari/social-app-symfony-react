@@ -14,7 +14,7 @@ export default new Router({
       name: "home",
       component: Home
     },
-    // and finally the default route, when none of the above matches:
+    // default route, when none of the above matches:
     { path: "*", component: PageNotFound }
   ]
 });

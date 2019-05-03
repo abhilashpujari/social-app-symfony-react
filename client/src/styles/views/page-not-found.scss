@@ -1,0 +1,24 @@
+.error__page-404 {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 40%;
+    .page__title,
+    .page__subtitle,
+    .page__description {
+        font-family: $primary-font;
+    }
+    .page__title {
+        font-weight: bold;
+        font-size: 48px;
+    }
+    .page__subtitle {
+        font-size: 30px;
+    }
+    .page__description {
+        font-size: 24px;
+    }
+}
