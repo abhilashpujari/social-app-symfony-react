@@ -3,8 +3,7 @@ import '../styles/components/page-not-found.scss';
 import {
   Container,
   Row,
-  Col,
-  Button
+  Col
 } from 'react-bootstrap';
 
 import { Link } from "react-router-dom";

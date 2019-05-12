@@ -7,3 +7,7 @@
 @import "basics/layout.scss";
 @import "basics/links.scss";
 @import "basics/buttons.scss";
+
+body {
+    font-family: $primary-font !important;
+}
