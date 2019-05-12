@@ -1,10 +1,15 @@
-.login {
-    .login__box {
-        width: 40%;
-        margin: 50px auto auto auto;
+@import '../setup/mixins';
 
-        .logo {
-            max-width: 100px;
-        }
+.login {
+  .login__box {
+    width: 80%;
+    margin: 50px auto auto auto;
+    @include breakpoint(laptop) {
+      width: 40%;
     }
+
+    .logo {
+      max-width: 100px;
+    }
+  }
 }
