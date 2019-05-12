@@ -1,0 +1,8 @@
+@import "../setup/typography";
+
+.error__404 {
+    .page__title,
+    .page__description {
+        font-family: $primary-font;
+    }
+}
