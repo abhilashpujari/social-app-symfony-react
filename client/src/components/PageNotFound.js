@@ -15,7 +15,7 @@ function PageNotFound() {
       <Container>
         <Row>
           <Col className="text-center">
-            <h1 className="page__title">Oops! 404</h1>
+            <h1 className="page__title">404</h1>
             <p className="page__description">Page your are looking for is either temporarily unavailable</p>
             <p className="page__description">or doesn't exists...</p>
           </Col>
