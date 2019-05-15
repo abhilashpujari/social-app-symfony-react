@@ -5,6 +5,9 @@
     width: 80%;
     padding: 20px;
     margin: 50px auto auto auto;
+    -webkit-box-shadow: 2px -1px 19px -5px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px -1px 19px -5px rgba(0,0,0,0.75);
+    box-shadow: 2px -1px 19px -5px rgba(0,0,0,0.75);
     @include breakpoint(laptop) {
       width: 45%;
     }

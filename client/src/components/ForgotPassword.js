@@ -19,6 +19,9 @@ class ForgotPassword extends Component {
     };
   }
 
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
   render() {
     const { email } = this.state;
@@ -33,7 +36,7 @@ class ForgotPassword extends Component {
             <Form className="forgot-password__form">
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="email" placeholder="test@gmail.com" value={email} onChange={(e) => this.setState({ password: e.target.value })} />
+                <Form.Control type="email" name="email" placeholder="test@gmail.com" value={email} onChange={this.handleChange} />
               </Form.Group>
               <Form.Group>
                 <Button variant="primary" type="submit" block>
