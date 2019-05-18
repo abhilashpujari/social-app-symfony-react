@@ -10,6 +10,9 @@ import { Link } from "react-router-dom";
 import logo from '../logo.png';
 import '../styles/components/login.scss';
 
+import flashMessenger from '../utils/flashMessenger';
+import Validator from '../utils/validator';
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -18,10 +21,27 @@ class Login extends Component {
       email: "",
       password: ""
     };
+
+    this.flashMessenger = flashMessenger();
+    this.validationRules = {
+      password: 'required',
+      email: 'required|email'
+    };
   }
 
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  login = (e) => {
+    e.preventDefault();
+    let validator = new Validator(this.state, this.validationRules);
+
+    if (validator.isValid()) {
+
+    } else {
+     this.flashMessenger.error(validator.getErrorMessages());
+    }
   }
 
   render() {
@@ -45,7 +65,7 @@ class Login extends Component {
                 <Form.Control type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} />
               </Form.Group>
               <Form.Group>
-                <Button variant="primary" type="submit" block>
+                <Button variant="primary" type="submit" block onClick={this.login}>
                   Login
                 </Button>
               </Form.Group>
