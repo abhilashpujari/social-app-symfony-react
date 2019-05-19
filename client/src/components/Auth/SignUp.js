@@ -8,12 +8,12 @@ import {
 import { Link } from "react-router-dom";
 
 import logo from '../../logo.png';
-import '../../styles/components/login.scss';
+import '../../styles/components/sign-up.scss';
 
 import flashMessenger from '../../utils/flashMessenger';
 import Validator from '../../utils/validator';
 
-class Login extends Component {
+class SignUp extends Component {
   constructor(props) {
     super(props);
 
@@ -23,6 +23,7 @@ class Login extends Component {
     };
 
     this.flashMessenger = flashMessenger();
+
     this.validationRules = {
       password: 'required|min:6',
       email: 'required|email'
@@ -33,7 +34,7 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  login = (e) => {
+  signUp = (e) => {
     e.preventDefault();
     let validator = new Validator(this.state, this.validationRules);
 
@@ -49,12 +50,12 @@ class Login extends Component {
 
     return (
       <Container>
-        <div className="login">
-          <div className="login__box">
+        <div className="sign-up">
+          <div className="sign-up__box">
             <div className="logo__container text-center">
               <img className="logo" src={logo} alt="Logo" />
             </div>
-            <Form className="login__form">
+            <Form className="sign-up__form">
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control type="email" name="email" placeholder="test@gmail.com" value={email} onChange={this.handleChange} />
@@ -65,13 +66,13 @@ class Login extends Component {
                 <Form.Control type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} />
               </Form.Group>
               <Form.Group>
-                <Button variant="primary" type="submit" block onClick={this.login}>
-                  Login
+                <Button variant="primary" type="submit" block onClick={this.signUp}>
+                  Sign Up
                 </Button>
               </Form.Group>
               <Form.Group className="text-center">
-                Don't have an account
-                <Link to="/signup">&nbsp;Sign up</Link>
+                Already have an account
+                <Link to="/">&nbsp;Login</Link>
               </Form.Group>
               <Form.Group className="text-center">
                 <Link to="/forgot-password">&nbsp;Forgot Password</Link>
@@ -84,4 +85,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default SignUp;

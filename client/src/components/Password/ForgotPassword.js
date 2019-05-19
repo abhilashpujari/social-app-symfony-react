@@ -8,23 +8,21 @@ import {
 import { Link } from "react-router-dom";
 
 import logo from '../../logo.png';
-import '../../styles/components/login.scss';
+import '../../styles/components/forgot-password.scss';
 
 import flashMessenger from '../../utils/flashMessenger';
 import Validator from '../../utils/validator';
 
-class Login extends Component {
+class ForgotPassword extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: "",
-      password: ""
+      email: ""
     };
 
     this.flashMessenger = flashMessenger();
     this.validationRules = {
-      password: 'required|min:6',
       email: 'required|email'
     };
   }
@@ -33,7 +31,7 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  login = (e) => {
+  forgotPassword = (e) => {
     e.preventDefault();
     let validator = new Validator(this.state, this.validationRules);
 
@@ -45,43 +43,35 @@ class Login extends Component {
   }
 
   render() {
-    const { email, password } = this.state;
+    const { email } = this.state;
 
     return (
       <Container>
-        <div className="login">
-          <div className="login__box">
+        <div className="forgot-password">
+          <div className="forgot-password__box">
             <div className="logo__container text-center">
               <img className="logo" src={logo} alt="Logo" />
             </div>
-            <Form className="login__form">
+            <Form className="forgot-password__form">
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control type="email" name="email" placeholder="test@gmail.com" value={email} onChange={this.handleChange} />
               </Form.Group>
-
-              <Form.Group controlId="password">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} />
-              </Form.Group>
               <Form.Group>
-                <Button variant="primary" type="submit" block onClick={this.login}>
-                  Login
+                <Button variant="primary" type="submit" block onClick={this.forgotPassword}>
+                  Sent Reset Link
                 </Button>
               </Form.Group>
+
               <Form.Group className="text-center">
-                Don't have an account
-                <Link to="/signup">&nbsp;Sign up</Link>
-              </Form.Group>
-              <Form.Group className="text-center">
-                <Link to="/forgot-password">&nbsp;Forgot Password</Link>
+                <Link to="/">&nbsp;Login</Link>
               </Form.Group>
             </Form>
           </div>
         </div>
-      </Container>
+      </Container >
     );
   }
 }
 
-export default Login;
+export default ForgotPassword;
