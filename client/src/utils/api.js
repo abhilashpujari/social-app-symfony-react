@@ -11,10 +11,10 @@ const api = () => {
 
   return {
     get(endpoint, url, data, options = {}) {
-      send(endpoint, url, 'get', options);
+      return send(endpoint, url, 'get', options);
     },
     post(endpoint, url, data, options = {}) {
-      send(endpoint, url, 'post', options);
+      return send(endpoint, url, 'post', options);
     }
   }
 };
