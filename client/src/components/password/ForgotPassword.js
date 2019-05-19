@@ -7,8 +7,11 @@ import {
 
 import { Link } from "react-router-dom";
 
-import logo from '../logo.png';
-import '../styles/components/forgot-password.scss';
+import logo from '../../logo.png';
+import '../../styles/components/forgot-password.scss';
+
+import flashMessenger from '../../utils/flashMessenger';
+import Validator from '../../utils/validator';
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -17,10 +20,26 @@ class ForgotPassword extends Component {
     this.state = {
       email: ""
     };
+
+    this.flashMessenger = flashMessenger();
+    this.validationRules = {
+      email: 'required|email'
+    };
   }
 
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  forgotPassword = (e) => {
+    e.preventDefault();
+    let validator = new Validator(this.state, this.validationRules);
+
+    if (validator.isValid()) {
+
+    } else {
+      this.flashMessenger.error(validator.getErrorMessages());
+    }
   }
 
   render() {
@@ -39,7 +58,7 @@ class ForgotPassword extends Component {
                 <Form.Control type="email" name="email" placeholder="test@gmail.com" value={email} onChange={this.handleChange} />
               </Form.Group>
               <Form.Group>
-                <Button variant="primary" type="submit" block>
+                <Button variant="primary" type="submit" block onClick={this.forgotPassword}>
                   Sent Reset Link
                 </Button>
               </Form.Group>

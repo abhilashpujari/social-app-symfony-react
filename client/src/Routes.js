@@ -1,11 +1,11 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom';
 
-import Login from './components/Login';
+import Login from './components/auth/Login';
+import SignUp from './components/auth/SignUp';
+import ForgotPassword from './components/password/ForgotPassword';
+import ChangePassword from './components/password/ChangePassword';
 import PageNotFound from './components/PageNotFound';
-import SignUp from './components/SignUp';
-import ForgotPassword from './components/ForgotPassword';
-import ChangePassword from './components/ChangePassword';
 
 const Routes = () => (
   <Switch>
