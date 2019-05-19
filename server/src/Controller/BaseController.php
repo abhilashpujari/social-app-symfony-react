@@ -37,8 +37,7 @@ class BaseController extends AbstractController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         Auth $auth
-    )
-    {
+    ) {
         $this->serializer = $serializer;
         $this->validator =  $validator;
         $this->auth = $auth;
@@ -46,8 +45,7 @@ class BaseController extends AbstractController
     }
 
     protected function init()
-    {
-    }
+    { }
 
     /**
      * @param $entity
@@ -109,7 +107,7 @@ class BaseController extends AbstractController
         /** @var Auth $identity */
         $identity = $this->getIdentity();
         if ($identity->isAuthenticated()) {
-            $response->headers->set('X-AUTH-TOKEN', $identity->getToken());
+            $response->headers->set('X-Auth-Token', $identity->getToken());
         }
 
         return $response;

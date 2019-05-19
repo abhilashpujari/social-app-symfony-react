@@ -24,8 +24,7 @@ class ChangePassword extends Component {
 
     this.flashMessenger = flashMessenger();
     this.validationRules = {
-      password: 'required|min:6',
-      token: 'required'
+      password: 'required|min:6'
     };
   }
 
@@ -47,12 +46,7 @@ class ChangePassword extends Component {
 
   render() {
     const { password } = this.state;
-    const { token } = this.props.match.params;
-
-    this.setState({
-      token: token
-    });
-
+    
     return (
       <Container>
         <div className="change-password">

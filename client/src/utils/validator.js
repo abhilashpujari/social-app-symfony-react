@@ -20,4 +20,5 @@ class Validation {
     return errorMessage;
   }
 }
+
 export default Validation;

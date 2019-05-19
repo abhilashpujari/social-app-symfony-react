@@ -9,4 +9,4 @@ lexik_jwt_authentication:
         authorization_header:
             enabled: true
             prefix:  ~
-            name:    X-AUTH-TOKEN
+            name:    X-Auth-Token
