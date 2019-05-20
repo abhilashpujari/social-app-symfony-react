@@ -24,7 +24,6 @@ class AccountController extends BaseController
      *
      * @Route("/account", methods={"PUT"})
      *
-     * @param Request $request
      * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \App\Exception\HttpBadRequestException
@@ -38,7 +37,7 @@ class AccountController extends BaseController
      * @SWG\Tag(name="Account")
      *
      */
-    public function update(Request $request, Validator $validator)
+    public function update(Validator $validator)
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
