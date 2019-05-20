@@ -68,26 +68,26 @@ class UserController extends BaseController
             ->findOneBy(['email' => $requestData->email]);
 
         if (!$user) {
-            throw new NotFoundHttpException('User not found!!');
+            throw new NotFoundHttpException('User not registered!!');
         }
 
         if (!$user->verifyPassword($requestData->password)) {
-            throw new HttpUnauthorizedException('Authorization failed!!');
+            throw new HttpUnauthorizedException('Invalid password!!');
         }
 
         $token = $jwtEncoder
-        ->encode([
-            'fullName' => $user->getFullName(),
-            'id' => $user->getId(),
-            'roles' => $user->getRoles()
-        ]);
+            ->encode([
+                'fullName' => $user->getFullName(),
+                'id' => $user->getId(),
+                'roles' => $user->getRoles()
+            ]);
 
         $user->setLastAccessTime(new \DateTime('now'));
 
         $em->persist($user);
         $em->flush();
 
-        return $this->setResponse('Authenticated successfully', 200, ['X-AUTH-TOKEN' => $token]);
+        return $this->setResponse('Authenticated successfully', 200, ['X-Auth-Token' => $token]);
     }
 
 

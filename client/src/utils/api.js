@@ -24,27 +24,35 @@ const api = () => {
       const response = await axios
         .request(requestOptions);
 
-      if (response.headers.headers('X-Auth-Token')) {
-        identity.setToken(response.headers.headers('X-Auth-Token'));
+      if (response.headers['x-auth-token']) {
+        identity.setToken(response.headers['x-auth-token']);
       }
 
       return Promise.resolve(response.data);
     } catch (error) {
       let errorMessage = 'Internal Server error';
-      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-        identity.clearIdentity();
-        //window.location = '/';
-      }
-
-      console.log(error.response);
       if (error.response && error.response.data.error) {
         errorMessage = error.response.data.error;
       }
+
+      // if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      //   identity.clearIdentity();
+      //   //window.location = '/';
+      // }
+
       return Promise.reject(errorMessage);
     }
   };
 
   return {
+    delete(endpoint, url, params = {}, options = {}) {
+      let defaultOptions = {
+        params: params
+      };
+
+      Object.assign(options, defaultOptions);
+      return _send(endpoint, url, 'delete', options);
+    },
     get(endpoint, url, params = {}, options = {}) {
       let defaultOptions = {
         params: params
@@ -60,6 +68,14 @@ const api = () => {
 
       Object.assign(options, defaultOptions);
       return _send(endpoint, url, 'post', options);
+    },
+    put(endpoint, url, data = {}, options = {}) {
+      let defaultOptions = {
+        data: data
+      };
+
+      Object.assign(options, defaultOptions);
+      return _send(endpoint, url, 'put', options);
     }
   }
 }
