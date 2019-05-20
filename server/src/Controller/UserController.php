@@ -68,11 +68,11 @@ class UserController extends BaseController
             ->findOneBy(['email' => $requestData->email]);
 
         if (!$user) {
-            throw new NotFoundHttpException('User not registered!!');
+            throw new NotFoundHttpException('Incorrect email or password');
         }
 
         if (!$user->verifyPassword($requestData->password)) {
-            throw new HttpUnauthorizedException('Invalid password!!');
+            throw new HttpUnauthorizedException('Incorrect email or password');
         }
 
         $token = $jwtEncoder
