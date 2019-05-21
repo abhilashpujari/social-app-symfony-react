@@ -43,6 +43,11 @@ services:
         class:     App\Service\Mailer
         arguments: ["@mailer", "@twig"]
 
+    sociapp.event.jwt_expired_listener:
+        class: App\EventListener\JWTExpiredListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_expired, method: onJWTExpired }
+
     App\Normalizer\EntityNormalizer:
         public: false
         autowire: true

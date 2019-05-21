@@ -23,7 +23,16 @@ const identity = () => {
       }
     },
     isAuthenticated() {
-      return (this.getIdentity() !== false);
+      if (this.getIdentity() === false) {
+        return false;
+      }
+
+      const { exp } = this.getIdentity();
+      if (exp < (new Date().getTime() + 1) / 1000) {
+        return false;
+      }
+
+      return true;
     },
     setToken(token) {
       localStorage.setItem('token', token);

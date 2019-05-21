@@ -35,10 +35,10 @@ const api = () => {
         errorMessage = error.response.data.error;
       }
 
-      // if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-      //   identity.clearIdentity();
-      //   //window.location = '/';
-      // }
+      if (error.response && (error.response.status === 419)) {
+        identity.clearIdentity();
+        window.location = '/';
+      }
 
       return Promise.reject(errorMessage);
     }
