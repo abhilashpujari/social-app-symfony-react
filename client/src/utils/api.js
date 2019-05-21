@@ -30,7 +30,7 @@ const api = () => {
 
       return Promise.resolve(response.data);
     } catch (error) {
-      let errorMessage = 'Internal Server error';
+      let errorMessage = 'An Error Occured';
       if (error.response && error.response.data.error) {
         errorMessage = error.response.data.error;
       }
