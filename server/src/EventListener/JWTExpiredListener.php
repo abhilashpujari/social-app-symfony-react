@@ -13,6 +13,12 @@ class JWTExpiredListener
     {
         /** @var JWTAuthenticationFailureResponse */
         $response = $event->getResponse();
-        $response->setStatusCode(419);
+        $response->setStatusCode(419, 'Authentication Timeout');
+        $response->setContent(json_encode([
+            'error' => [
+                'code' => 419,
+                'message' => 'Authentication Timeout'
+            ]
+        ]));
     }
 }
