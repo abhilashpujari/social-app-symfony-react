@@ -42,7 +42,7 @@ class SignUp extends Component {
 
     if (validator.isValid()) {
       api.post(`${config.endpoints.api}`, '/register', this.state).then((response) => {
-        this.flashMessenger.show('success', 'Registered successfully', true);
+        this.flashMessenger.show('success', 'Registered successfully');
         this.props.history.push('/');
       }).catch(error => this.flashMessenger.show('error', error.message));
     } else {

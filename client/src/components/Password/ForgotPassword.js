@@ -39,6 +39,7 @@ class ForgotPassword extends Component {
 
     if (validator.isValid()) {
       api.post(`${config.endpoints.api}`, '/forgot-password', this.state).then((response) => {
+        this.flashMessenger.show('success', 'Reset link sent to your email');
         this.props.history.push('/');
       }).catch(error => this.flashMessenger.show('error', error.message));
     } else {
