@@ -13,6 +13,7 @@ import '../../styles/components/login.scss';
 import flashMessenger from '../../utils/flashMessenger';
 import Validator from '../../utils/validator';
 import api from '../../utils/api';
+import config from '../../config/index';
 
 class Login extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class Login extends Component {
     let validator = new Validator(this.state, this.validationRules);
 
     if (validator.isValid()) {
-      api.post('http://api.sociapp.local/v1.0', '/authenticate', this.state).then((response) => {
+      api.post(`${config.endpoints.api}`, '/authenticate', this.state).then((response) => {
         this.props.history.push('/home');
       }).catch(error => this.flashMessenger.error(error.message));
     } else {

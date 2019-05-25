@@ -36,7 +36,7 @@ const api = () => {
       }
 
       // Clear identity and redirect to login if authentication token expires
-      if (error.response && (error.response.status === 419)) {
+      if (error.response && (error.response.status === 419 || error.response.status === 401)) {
         identity.clearIdentity();
         window.location = '/';
       }

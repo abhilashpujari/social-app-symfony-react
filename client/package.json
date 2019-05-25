@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
+    "commander": "^2.20.0",
     "jwt-decode": "^2.2.0",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
@@ -16,8 +17,8 @@
     "validatorjs": "^3.15.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "node src/commands/index.js config-init && react-scripts start",
+    "build": "node src/commands/index.js config-init && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
