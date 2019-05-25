@@ -12,6 +12,8 @@ import '../../styles/components/change-password.scss';
 
 import flashMessenger from '../../utils/flashMessenger';
 import Validator from '../../utils/validator';
+import api from '../../utils/api';
+import config from '../../config/index';
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -38,15 +40,17 @@ class ChangePassword extends Component {
     let validator = new Validator(this.state, this.validationRules);
 
     if (validator.isValid()) {
-
+      api.post(`${config.endpoints.api}`, '/change-password', this.state).then((response) => {
+        this.props.history.push('/');
+      }).catch(error => this.flashMessenger.show('error', error.message));
     } else {
-      this.flashMessenger.error(validator.getErrorMessages());
+      this.flashMessenger.show('error', validator.getErrorMessages());
     }
   }
 
   render() {
     const { password } = this.state;
-    
+
     return (
       <Container>
         <div className="change-password">

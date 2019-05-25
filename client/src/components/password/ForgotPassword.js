@@ -12,6 +12,8 @@ import '../../styles/components/forgot-password.scss';
 
 import flashMessenger from '../../utils/flashMessenger';
 import Validator from '../../utils/validator';
+import api from '../../utils/api';
+import config from '../../config/index';
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -36,9 +38,11 @@ class ForgotPassword extends Component {
     let validator = new Validator(this.state, this.validationRules);
 
     if (validator.isValid()) {
-
+      api.post(`${config.endpoints.api}`, '/forgot-password', this.state).then((response) => {
+        this.props.history.push('/');
+      }).catch(error => this.flashMessenger.show('error', error.message));
     } else {
-      this.flashMessenger.error(validator.getErrorMessages());
+      this.flashMessenger.show('error', validator.getErrorMessages());
     }
   }
 

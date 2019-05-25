@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import Login from './components/Auth/Login';

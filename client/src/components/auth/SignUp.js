@@ -13,6 +13,7 @@ import '../../styles/components/sign-up.scss';
 import flashMessenger from '../../utils/flashMessenger';
 import Validator from '../../utils/validator';
 import api from '../../utils/api';
+import config from '../../config/index';
 
 class SignUp extends Component {
   constructor(props) {
@@ -40,12 +41,12 @@ class SignUp extends Component {
     let validator = new Validator(this.state, this.validationRules);
 
     if (validator.isValid()) {
-      api.post('http://api.sociapp.local/v1.0', '/register', this.state).then((response) => {
-        this.flashMessenger.success('Registered successfully');
+      api.post(`${config.endpoints.api}`, '/register', this.state).then((response) => {
+        this.flashMessenger.show('success', 'Registered successfully', true);
         this.props.history.push('/');
-      }).catch(error => this.flashMessenger.error(error.message));
+      }).catch(error => this.flashMessenger.show('error', error.message));
     } else {
-      this.flashMessenger.error(validator.getErrorMessages());
+      this.flashMessenger.show('error', validator.getErrorMessages());
     }
   }
 

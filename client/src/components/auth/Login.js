@@ -42,9 +42,9 @@ class Login extends Component {
     if (validator.isValid()) {
       api.post(`${config.endpoints.api}`, '/authenticate', this.state).then((response) => {
         this.props.history.push('/home');
-      }).catch(error => this.flashMessenger.error(error.message));
+      }).catch(error => this.flashMessenger.show('error', error.message));
     } else {
-      this.flashMessenger.error(validator.getErrorMessages());
+      this.flashMessenger.show('error', validator.getErrorMessages());
     }
   }
 
