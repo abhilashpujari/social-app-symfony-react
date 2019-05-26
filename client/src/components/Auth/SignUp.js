@@ -24,8 +24,6 @@ class SignUp extends Component {
       password: ""
     };
 
-    this.flashMessenger = flashMessenger();
-
     this.validationRules = {
       password: 'required|min:6',
       email: 'required|email'
@@ -41,12 +39,14 @@ class SignUp extends Component {
     let validator = new Validator(this.state, this.validationRules);
 
     if (validator.isValid()) {
-      api.post(`${config.endpoints.api}`, '/register', this.state).then((response) => {
-        this.flashMessenger.show('success', 'Registered successfully');
-        this.props.history.push('/');
-      }).catch(error => this.flashMessenger.show('error', error.message));
+      api
+        .post(`${config.endpoints.api}`, '/register', this.state)
+        .then((response) => {
+          flashMessenger.show('success', 'Registered successfully');
+          this.props.history.push('/');
+        }).catch(error => flashMessenger.show('error', error.message));
     } else {
-      this.flashMessenger.show('error', validator.getErrorMessages());
+      flashMessenger.show('error', validator.getErrorMessages());
     }
   }
 

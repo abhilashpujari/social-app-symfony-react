@@ -20,11 +20,9 @@ class ChangePassword extends Component {
     super(props);
 
     this.state = {
-      password: "",
-      token: ""
+      password: ""
     };
 
-    this.flashMessenger = flashMessenger();
     this.validationRules = {
       password: 'required|min:6'
     };
@@ -38,13 +36,23 @@ class ChangePassword extends Component {
     e.preventDefault();
 
     let validator = new Validator(this.state, this.validationRules);
+    const { token } = this.props.match.params;
+    const { password } = this.state;
+    
+    const requestData = {
+      password,
+      token
+    };
 
     if (validator.isValid()) {
-      api.post(`${config.endpoints.api}`, '/change-password', this.state).then((response) => {
-        this.props.history.push('/');
-      }).catch(error => this.flashMessenger.show('error', error.message));
+      api
+        .put(`${config.endpoints.api}`, '/update-password', requestData)
+        .then((response) => {
+          flashMessenger.show('success', 'Password Reset successfully!!');
+          this.props.history.push('/');
+        }).catch(error => flashMessenger.show('error', error.message));
     } else {
-      this.flashMessenger.show('error', validator.getErrorMessages());
+      flashMessenger.show('error', validator.getErrorMessages());
     }
   }
 
@@ -64,7 +72,7 @@ class ChangePassword extends Component {
                 <Form.Control type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} />
               </Form.Group>
               <Form.Group>
-                <Button variant="primary" type="submit" block>
+                <Button variant="primary" type="submit" block onClick={this.changePassword}>
                   Change Password
                 </Button>
               </Form.Group>

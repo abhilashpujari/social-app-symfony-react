@@ -23,7 +23,6 @@ class ForgotPassword extends Component {
       email: ""
     };
 
-    this.flashMessenger = flashMessenger();
     this.validationRules = {
       email: 'required|email'
     };
@@ -38,12 +37,14 @@ class ForgotPassword extends Component {
     let validator = new Validator(this.state, this.validationRules);
 
     if (validator.isValid()) {
-      api.post(`${config.endpoints.api}`, '/forgot-password', this.state).then((response) => {
-        this.flashMessenger.show('success', 'Reset link sent to your email');
-        this.props.history.push('/');
-      }).catch(error => this.flashMessenger.show('error', error.message));
+      api
+        .post(`${config.endpoints.api}`, '/forgot-password', this.state)
+        .then((response) => {
+          flashMessenger.show('success', 'Reset link sent to your email');
+          this.props.history.push('/');
+        }).catch(error => flashMessenger.show('error', error.message));
     } else {
-      this.flashMessenger.show('error', validator.getErrorMessages());
+      flashMessenger.show('error', validator.getErrorMessages());
     }
   }
 

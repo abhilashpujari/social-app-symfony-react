@@ -44,4 +44,4 @@ function flashMessenger() {
   }
 }
 
-export default flashMessenger;
+export default flashMessenger();
