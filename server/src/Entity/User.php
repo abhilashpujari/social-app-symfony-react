@@ -72,7 +72,7 @@ class User
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isActive;
+    private $isActive = true;
 
     public function getId(): ?int
     {
@@ -171,6 +171,13 @@ class User
             $roles[] = self::ROLE_USER;
         }
         return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function getIsActive(): ?bool
