@@ -88,7 +88,7 @@ class PasswordController extends  BaseController
     /**
      * Update Password
      *
-     * @Route("/update-password", methods={"PUT"})
+     * @Route("/reset-password", methods={"PUT"})
      *
      * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
@@ -103,7 +103,7 @@ class PasswordController extends  BaseController
      * @SWG\Tag(name="Password")
      *
      */
-    public function updatePassword(Validator $validator, CacheItemPoolInterface $redisCache)
+    public function resetPassword(Validator $validator, CacheItemPoolInterface $redisCache)
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();

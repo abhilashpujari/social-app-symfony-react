@@ -15,7 +15,7 @@ import Validator from '../../utils/validator';
 import api from '../../utils/api';
 import config from '../../config/index';
 
-class ChangePassword extends Component {
+class ResetPassword extends Component {
   constructor(props) {
     super(props);
 
@@ -32,7 +32,7 @@ class ChangePassword extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  changePassword = (e) => {
+  resetPassword = (e) => {
     e.preventDefault();
 
     let validator = new Validator(this.state, this.validationRules);
@@ -46,7 +46,7 @@ class ChangePassword extends Component {
 
     if (validator.isValid()) {
       api
-        .put(`${config.endpoints.api}`, '/update-password', requestData)
+        .put(`${config.endpoints.api}`, '/reset-password', requestData)
         .then((response) => {
           flashMessenger.show('success', 'Password Reset successfully!!');
           this.props.history.push('/');
@@ -72,8 +72,8 @@ class ChangePassword extends Component {
                 <Form.Control type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} />
               </Form.Group>
               <Form.Group>
-                <Button variant="primary" type="submit" block onClick={this.changePassword}>
-                  Change Password
+                <Button variant="primary" type="submit" block onClick={this.resetPassword}>
+                  Reset Password
                 </Button>
               </Form.Group>
 
@@ -88,4 +88,4 @@ class ChangePassword extends Component {
   }
 }
 
-export default ChangePassword;
+export default ResetPassword;
