@@ -15,16 +15,30 @@ class User
     const ROLE_USER = 'ROLE_USER';
 
     /**
+     * The fields that aren't mass assignable.
+     *
+     * @var array
+     */
+    const GUARDED_FIELDS = ['roles', 'lastAccessTime', 'isActive'];
+
+    /**
+     * The fields that should be hidden.
+     *
+     * @var array
+     */
+    const HIDDEN_FIELDS = ['password'];
+
+    /**
      * @ORM\Column(type="string", length=255,  unique=true)
      *
      */
-    protected $email;
+    private $email;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      *
      */
-    protected $firstName;
+    private $firstName;
 
     /**
      *
@@ -32,28 +46,33 @@ class User
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
-    protected $lastName;
+    private $lastName;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @var \DateTime
      */
-    protected $lastAccessTime;
+    private $lastAccessTime;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $password;
+    private $password;
 
     /**
      * @ORM\Column(type="json")
      */
-    protected $roles = [];
+    private $roles = [];
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive;
 
     public function getId(): ?int
     {
@@ -154,8 +173,15 @@ class User
         return array_unique($roles);
     }
 
-	public function setRoles(array $roles): void
+    public function getIsActive(): ?bool
     {
-        $this->roles = $roles;
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
+
+        return $this;
     }
 }

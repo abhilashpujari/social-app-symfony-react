@@ -78,12 +78,12 @@ class AccountController extends BaseController
         }
 
         $responseData = $this->deserialize($requestData, User::class, [
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['roles', 'lastAccessTime'],
+            AbstractNormalizer::IGNORED_ATTRIBUTES => USER::GUARDED_FIELDS,
             AbstractNormalizer::OBJECT_TO_POPULATE => $user
         ]);
 
         return $this->setResponse($responseData, 200, [], [
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['password']
+            AbstractNormalizer::IGNORED_ATTRIBUTES => USER::HIDDEN_FIELDS
         ]);
     }
 
@@ -124,7 +124,7 @@ class AccountController extends BaseController
 
         return $this->setResponse($user, 200, [], [
             AbstractNormalizer::ATTRIBUTES => $serializer,
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['password']
+            AbstractNormalizer::IGNORED_ATTRIBUTES => USER::HIDDEN_FIELDS
         ]);
     }
 }

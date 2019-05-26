@@ -79,7 +79,8 @@ class UserController extends BaseController
             ->encode([
                 'fullName' => $user->getFullName(),
                 'id' => $user->getId(),
-                'roles' => $user->getRoles()
+                'roles' => $user->getRoles(),
+                'isActive' => $user->getIsActive()
             ]);
 
         $user->setLastAccessTime(new \DateTime('now'));
@@ -140,7 +141,7 @@ class UserController extends BaseController
         }
 
         $user = $this->deserialize($requestData, User::class, [
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['roles', 'lastAccessTime']
+            AbstractNormalizer::IGNORED_ATTRIBUTES => USER::GUARDED_FIELDS
         ]);
 
         $user->setRoles([User::ROLE_USER]);

@@ -27,8 +27,8 @@ const identity = () => {
         return false;
       }
 
-      const { exp } = this.getIdentity();
-      if (exp < (new Date().getTime() + 1) / 1000) {
+      const { exp, isActive } = this.getIdentity();
+      if (!isActive && (exp < (new Date().getTime() + 1) / 1000)) {
         return false;
       }
 
