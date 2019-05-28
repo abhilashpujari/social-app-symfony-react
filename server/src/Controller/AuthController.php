@@ -17,10 +17,10 @@ use Respect\Validation\Validator as v;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
- * Class UserController
+ * Class AuthController
  * @package App\Controller
  */
-class UserController extends BaseController
+class AuthController extends BaseController
 {
     /**
      * Authenticate User

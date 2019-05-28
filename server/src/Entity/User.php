@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use DateTime;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -27,6 +28,12 @@ class User
      * @var array
      */
     const HIDDEN_FIELDS = ['password'];
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var DateTime
+     */
+    private $creationDate;
 
     /**
      * @ORM\Column(type="string", length=255,  unique=true)
@@ -55,7 +62,7 @@ class User
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @var \DateTime
+     * @var DateTime
      */
     private $lastAccessTime;
 
@@ -73,6 +80,22 @@ class User
      * @ORM\Column(type="boolean")
      */
     private $isActive = true;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->creationDate = new DateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreationDate(): string
+    {
+        return $this->creationDate->format('c');
+    }
 
     public function getId(): ?int
     {
