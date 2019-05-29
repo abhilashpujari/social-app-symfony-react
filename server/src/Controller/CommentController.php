@@ -102,15 +102,23 @@ class CommentController extends BaseController
 
         $serializer = ($request->get('serializer', null))
             ?: [
-                'comment', 'id', 'reply', 'creationDate', 'parent', 'user'
+                'comment', 'id', 'reply', 'creationDate', 'user'
             ];
+
+        $commentObject = $this->getDoctrine()->getManager()
+            ->getRepository(Comment::class)
+            ->getCommentList([]);
+
 
         /** @var User $user */
         $comment = '';
 
-        return $this->setResponse($comment, 200, [], [
+        return $this->setResponse($commentObject, 200, [], [
             AbstractNormalizer::ATTRIBUTES => $serializer,
-            AbstractNormalizer::IGNORED_ATTRIBUTES => Comment::HIDDEN_FIELDS
+            AbstractNormalizer::IGNORED_ATTRIBUTES => Comment::HIDDEN_FIELDS,
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
         ]);
     }
 }

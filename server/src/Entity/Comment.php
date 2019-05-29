@@ -24,7 +24,7 @@ class Comment
      *
      * @var array
      */
-    const HIDDEN_FIELDS = ['post'];
+    const HIDDEN_FIELDS = ['post', 'parent'];
 
     /**
      * @ORM\Column(type="text")
