@@ -20,6 +20,23 @@ class Comment
     const GUARDED_FIELDS = ['creationDate', 'parent', 'post', 'user', 'reply'];
 
     /**
+     * The fields that should be hidden.
+     *
+     * @var array
+     */
+    const HIDDEN_FIELDS = ['post'];
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $comment;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $creationDate;
+
+    /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -31,16 +48,6 @@ class Comment
      * @var ArrayCollection
      */
     protected $reply;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $comment;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $creationDate;
 
     /**
      * @ORM\ManyToOne(targetEntity="Comment", inversedBy="reply")

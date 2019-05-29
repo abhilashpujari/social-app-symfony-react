@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Service\Validator;
 use Doctrine\ORM\EntityManager;
 use Respect\Validation\Validator as v;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -18,7 +19,6 @@ class CommentController extends BaseController
      * Create comment
      *
      * @Route("/comment", methods={"POST"})
-
      *
      * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
@@ -76,5 +76,41 @@ class CommentController extends BaseController
         $em->flush();
 
        return $this->setResponse('Comment created successfully');
+    }
+
+    /**
+     * Get comment
+     *
+     * @Route("/comment", methods={"GET"})
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \App\Exception\HttpBadRequestException
+     * @throws \App\Exception\HttpConflictException
+     * @throws \App\Exception\ValidationException
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Get Comment"
+     * )
+     * @SWG\Tag(name="Comment")
+     *
+     */
+    public function getList(Request $request)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $serializer = ($request->get('serializer', null))
+            ?: [
+                'comment', 'id', 'reply', 'creationDate', 'parent', 'user'
+            ];
+
+        /** @var User $user */
+        $comment = '';
+
+        return $this->setResponse($comment, 200, [], [
+            AbstractNormalizer::ATTRIBUTES => $serializer,
+            AbstractNormalizer::IGNORED_ATTRIBUTES => Comment::HIDDEN_FIELDS
+        ]);
     }
 }
