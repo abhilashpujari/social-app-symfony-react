@@ -11,6 +11,13 @@ use DateTime;
 class Post
 {
     /**
+     * The fields that aren't mass assignable.
+     *
+     * @var array
+     */
+    const GUARDED_FIELDS = ['creationDate', 'user'];
+
+    /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")

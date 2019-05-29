@@ -12,12 +12,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-class CommentController extends BaseController
+class ReplyController extends BaseController
 {
     /**
-     * Create comment
+     * Create reply
      *
-     * @Route("/comment", methods={"POST"})
+     * @Route("/reply", methods={"POST"})
 
      *
      * @param Validator $validator
@@ -28,9 +28,9 @@ class CommentController extends BaseController
      *
      * @SWG\Response(
      *     response=200,
-     *     description="Create Comment"
+     *     description="Create Reply"
      * )
-     * @SWG\Tag(name="Comment")
+     * @SWG\Tag(name="Reply")
      *
      */
     public function create(Validator $validator)
@@ -47,7 +47,13 @@ class CommentController extends BaseController
                 true
             )
             ->setValidator(
-                v::notEmpty()->intType(),
+                v::noWhitespace()->notEmpty()->intType(),
+                'parent',
+                'parent is required and  must be a integer type',
+                true
+            )
+            ->setValidator(
+                v::noWhitespace()->notEmpty()->intType(),
                 'post',
                 'post is required and  must be a integer type',
                 true
@@ -62,6 +68,10 @@ class CommentController extends BaseController
             ->find($identity->getId());
 
         /** @var Post $post */
+        $parentComment = $em->getRepository(Comment::class)
+            ->find($requestData->parent);
+
+        /** @var Post $post */
         $post = $em->getRepository(Post::class)
             ->find($requestData->post);
 
@@ -69,12 +79,13 @@ class CommentController extends BaseController
             AbstractNormalizer::IGNORED_ATTRIBUTES => Comment::GUARDED_FIELDS
         ]);
 
+        $comment->setParent($parentComment);
         $comment->setPost($post);
         $comment->setUser($user);
 
         $em->persist($comment);
         $em->flush();
 
-       return $this->setResponse('Comment created successfully');
+       return $this->setResponse('Reply created successfully');
     }
 }

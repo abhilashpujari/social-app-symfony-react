@@ -12,13 +12,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
-class CommentController extends BaseController
+class PostController extends BaseController
 {
     /**
-     * Create comment
+     * Create post
      *
-     * @Route("/comment", methods={"POST"})
-
+     * @Route("/post", methods={"POST"})
      *
      * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
@@ -28,9 +27,9 @@ class CommentController extends BaseController
      *
      * @SWG\Response(
      *     response=200,
-     *     description="Create Comment"
+     *     description="Create Post"
      * )
-     * @SWG\Tag(name="Comment")
+     * @SWG\Tag(name="Post")
      *
      */
     public function create(Validator $validator)
@@ -41,19 +40,14 @@ class CommentController extends BaseController
 
         $validator
             ->setValidator(
-                v::notEmpty()->stringType(),
-                'comment',
-                'comment is required and must be a string type',
-                true
-            )
-            ->setValidator(
-                v::notEmpty()->intType(),
-                'post',
-                'post is required and  must be a integer type',
-                true
+                v::oneOf(
+                    v::notEmpty()->noWhitespace()->stringType(),
+                    v::nullType()
+                ),
+                'content',
+                'content must be a string or null type'
             )
             ->validate($requestData);
-
 
         $identity = $this->getIdentity();
 
@@ -61,20 +55,15 @@ class CommentController extends BaseController
         $user = $em->getRepository(User::class)
             ->find($identity->getId());
 
-        /** @var Post $post */
-        $post = $em->getRepository(Post::class)
-            ->find($requestData->post);
-
-        $comment = $this->deserialize($requestData, Comment::class, [
-            AbstractNormalizer::IGNORED_ATTRIBUTES => Comment::GUARDED_FIELDS
+        $post = $this->deserialize($requestData, Post::class, [
+            AbstractNormalizer::IGNORED_ATTRIBUTES => Post::GUARDED_FIELDS
         ]);
 
-        $comment->setPost($post);
-        $comment->setUser($user);
+        $post->setUser($user);
 
-        $em->persist($comment);
+        $em->persist($post);
         $em->flush();
 
-       return $this->setResponse('Comment created successfully');
+        return $this->setResponse('Post created successfully');
     }
 }

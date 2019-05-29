@@ -20,7 +20,7 @@ class User
      *
      * @var array
      */
-    const GUARDED_FIELDS = ['roles', 'lastAccessTime', 'isActive'];
+    const GUARDED_FIELDS = ['creationDate', 'isActive', 'lastAccessTime', 'roles'];
 
     /**
      * The fields that should be hidden.

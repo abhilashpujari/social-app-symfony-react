@@ -13,6 +13,13 @@ use DateTime;
 class Comment
 {
     /**
+     * The fields that aren't mass assignable.
+     *
+     * @var array
+     */
+    const GUARDED_FIELDS = ['creationDate', 'parent', 'post', 'user', 'reply'];
+
+    /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -23,7 +30,7 @@ class Comment
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="parent")
      * @var ArrayCollection
      */
-    protected $children;
+    protected $reply;
 
     /**
      * @ORM\Column(type="text")
@@ -36,7 +43,7 @@ class Comment
     private $creationDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Comment", inversedBy="reply")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      * @var Comment
      */
@@ -62,7 +69,7 @@ class Comment
     public function __construct()
     {
         $this->creationDate = new DateTime();
-        $this->children = new ArrayCollection();
+        $this->reply= new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -73,17 +80,17 @@ class Comment
     /**
      * @return ArrayCollection
      */
-    public function getChildren()
+    public function getReply()
     {
-        return $this->children;
+        return $this->reply;
     }
 
     /**
-     * @param ArrayCollection $children
+     * @param ArrayCollection $reply
      */
-    public function setChildren(ArrayCollection $children)
+    public function setReply(ArrayCollection $reply)
     {
-        $this->children = $children;
+        $this->reply= $reply;
     }
 
     public function getComment(): ?string

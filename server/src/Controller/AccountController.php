@@ -45,7 +45,7 @@ class AccountController extends BaseController
 
         $validator
             ->setValidator(
-                v::stringType()->noWhitespace()->length(3),
+                v::stringType()->length(3),
                 'firstName',
                 'firstName must be a string type with minimum length of 3'
             )
@@ -55,7 +55,7 @@ class AccountController extends BaseController
                 'email must be a valid email address'
             )
             ->setValidator(
-                v::stringType()->noWhitespace()->length(3),
+                v::stringType()->length(3),
                 'lastName',
                 'firstName must be a string type with minimum length of 3'
             )
