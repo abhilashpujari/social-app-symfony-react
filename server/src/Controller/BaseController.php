@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage;
  * Class BaseController
  * @package App\Controller
  */
-class BaseController extends AbstractController
+abstract class BaseController extends AbstractController
 {
     /** @var  ValidatorInterface $validator */
     protected $validator;

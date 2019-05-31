@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
-use App\Entity\Post;
+use App\Entity\Reply;
 use App\Entity\User;
+use App\Exception\HttpNotFoundException;
 use App\Service\Validator;
 use Doctrine\ORM\EntityManager;
 use Respect\Validation\Validator as v;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -22,6 +24,7 @@ class ReplyController extends BaseController
      *
      * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws HttpNotFoundException
      * @throws \App\Exception\HttpBadRequestException
      * @throws \App\Exception\HttpConflictException
      * @throws \App\Exception\ValidationException
@@ -41,25 +44,12 @@ class ReplyController extends BaseController
 
         $validator
             ->setValidator(
-                v::notEmpty()->stringType(),
+                v::notEmpty()->intType(),
                 'comment',
-                'comment is required and must be a string type',
-                true
-            )
-            ->setValidator(
-                v::noWhitespace()->notEmpty()->intType(),
-                'parent',
-                'parent is required and  must be a integer type',
-                true
-            )
-            ->setValidator(
-                v::noWhitespace()->notEmpty()->intType(),
-                'post',
-                'post is required and  must be a integer type',
+                'comment is required and must be a integer type',
                 true
             )
             ->validate($requestData);
-
 
         $identity = $this->getIdentity();
 
@@ -67,25 +57,64 @@ class ReplyController extends BaseController
         $user = $em->getRepository(User::class)
             ->find($identity->getId());
 
-        /** @var Post $post */
-        $parentComment = $em->getRepository(Comment::class)
-            ->find($requestData->parent);
+        /** @var Comment $comment */
+        $comment = $em->getRepository(Comment::class)
+            ->find($requestData->comment);
 
-        /** @var Post $post */
-        $post = $em->getRepository(Post::class)
-            ->find($requestData->post);
+        if (!$user) {
+            throw new HttpNotFoundException('Comment not found with id' . $requestData->cooment);
+        }
 
-        $comment = $this->deserialize($requestData, Comment::class, [
+        $reply = $this->deserialize($requestData, Reply::class, [
             AbstractNormalizer::IGNORED_ATTRIBUTES => Comment::GUARDED_FIELDS
         ]);
 
-        $comment->setParent($parentComment);
-        $comment->setPost($post);
-        $comment->setUser($user);
+        $reply->setComment($comment);
+        $reply->setUser($user);
 
-        $em->persist($comment);
+        $em->persist($reply);
         $em->flush();
 
        return $this->setResponse('Reply created successfully');
+    }
+
+    /**
+     * Get reply
+     *
+     * @Route("/reply", methods={"GET"})
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \App\Exception\HttpBadRequestException
+     * @throws \App\Exception\HttpConflictException
+     * @throws \App\Exception\ValidationException
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="Get Reply"
+     * )
+     * @SWG\Tag(name="Reply")
+     *
+     */
+    public function replyList(Request $request)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $serializer = ($request->get('serializer', null))
+            ?: [
+                'body', 'id', 'comment' => ['id'], 'creationDate', 'user' => ['id', 'fullName']
+            ];
+
+        $replyObject = $this->getDoctrine()->getManager()
+            ->getRepository(Reply::class)
+            ->getReplyList([]);
+
+        return $this->setResponse($replyObject, 200, [], [
+            AbstractNormalizer::ATTRIBUTES => $serializer,
+            AbstractNormalizer::IGNORED_ATTRIBUTES => Reply::HIDDEN_FIELDS,
+            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
+                return $object->getId();
+            }
+        ]);
     }
 }

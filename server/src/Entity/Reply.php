@@ -6,16 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ReplyRepository")
  */
-class Comment
+class Reply
 {
     /**
      * The fields that aren't mass assignable.
      *
      * @var array
      */
-    const GUARDED_FIELDS = ['creationDate', 'post', 'user'];
+    const GUARDED_FIELDS = ['creationDate', 'comment', 'user'];
 
     /**
      * The fields that should be hidden.
@@ -25,16 +25,6 @@ class Comment
     const HIDDEN_FIELDS = [];
 
     /**
-     * @ORM\Column(type="text")
-     */
-    private $body;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $creationDate;
-
-    /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -42,11 +32,16 @@ class Comment
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Post")
-     * @ORM\JoinColumn(name="post_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\Column(type="text")
+     */
+    private $body;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Comment")
+     * @ORM\JoinColumn(name="comment_id", referencedColumnName="id", onDelete="CASCADE")
      * @var Post
      */
-    private $post;
+    private $comment;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
@@ -56,7 +51,12 @@ class Comment
     private $user;
 
     /**
-     * Comment constructor.
+     * @ORM\Column(type="datetime")
+     */
+    private $creationDate;
+
+    /**
+     * Reply constructor.
      */
     public function __construct()
     {
@@ -80,19 +80,26 @@ class Comment
         return $this;
     }
 
-    public function getCreationDate(): string
+    public function getCreationDate(): ?string
     {
         return $this->creationDate->format('c');
     }
 
-    public function getPost(): ?Post
+    public function setCreationDate(\DateTimeInterface $creationDate): self
     {
-        return $this->post;
+        $this->creationDate = $creationDate;
+
+        return $this;
     }
 
-    public function setPost(?Post $post): self
+    public function getComment(): ?Comment
     {
-        $this->post = $post;
+        return $this->comment;
+    }
+
+    public function setComment(?Comment $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

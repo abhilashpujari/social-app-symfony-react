@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Exception\HttpNotFoundException;
 use App\Service\Validator;
 use Doctrine\ORM\EntityManager;
 use Respect\Validation\Validator as v;
@@ -22,6 +23,7 @@ class CommentController extends BaseController
      *
      * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws HttpNotFoundException
      * @throws \App\Exception\HttpBadRequestException
      * @throws \App\Exception\HttpConflictException
      * @throws \App\Exception\ValidationException
@@ -42,8 +44,8 @@ class CommentController extends BaseController
         $validator
             ->setValidator(
                 v::notEmpty()->stringType(),
-                'comment',
-                'comment is required and must be a string type',
+                'body',
+                'body is required and must be a string type',
                 true
             )
             ->setValidator(
@@ -64,6 +66,10 @@ class CommentController extends BaseController
         /** @var Post $post */
         $post = $em->getRepository(Post::class)
             ->find($requestData->post);
+
+        if (!$user) {
+            throw new HttpNotFoundException('Post not found with id' . $requestData->post);
+        }
 
         $comment = $this->deserialize($requestData, Comment::class, [
             AbstractNormalizer::IGNORED_ATTRIBUTES => Comment::GUARDED_FIELDS
@@ -95,23 +101,19 @@ class CommentController extends BaseController
      * @SWG\Tag(name="Comment")
      *
      */
-    public function getList(Request $request)
+    public function commentList(Request $request)
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
         $serializer = ($request->get('serializer', null))
             ?: [
-                'comment', 'id', 'reply', 'creationDate', 'user'
+                'body', 'id', 'post' => ['id'], 'creationDate', 'user' => ['id', 'fullName']
             ];
 
         $commentObject = $this->getDoctrine()->getManager()
             ->getRepository(Comment::class)
             ->getCommentList([]);
-
-
-        /** @var User $user */
-        $comment = '';
 
         return $this->setResponse($commentObject, 200, [], [
             AbstractNormalizer::ATTRIBUTES => $serializer,
