@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Core\Doctrine\Criteria\CriteriaParser;
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\QueryException;
@@ -31,10 +32,15 @@ class CommentRepository extends ServiceEntityRepository
         $qb = new QueryBuilder($this->_em);
 
         $qb->select("c")
-            ->from(Comment::class, "c");
+            ->from(
+                Comment::class, "c"
+            )
+            ->leftJoin(
+                "c.post", "post"
+            );
 
-        //$criteriaParser = new CriteriaParser($qb, $criteria, $this->getMapper());
-        //$criteriaParser->parse();
+        $criteriaParser = new CriteriaParser($qb, $criteria, $this->getMapper());
+        $criteriaParser->parse();
 
         return $qb->getQuery()->getResult();
     }
@@ -45,6 +51,9 @@ class CommentRepository extends ServiceEntityRepository
     protected function getMapper()
     {
         return [
+            'id' => 'c.id',
+            'creationDate' => 'c.creationDate',
+            'postId' => 'post.id'
         ];
     }
 }

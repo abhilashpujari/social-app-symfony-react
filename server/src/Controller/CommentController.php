@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Exception\HttpBadRequestException;
 use App\Exception\HttpNotFoundException;
 use App\Service\Validator;
 use Doctrine\ORM\EntityManager;
@@ -103,8 +104,12 @@ class CommentController extends BaseController
      */
     public function commentList(Request $request)
     {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
+        $param = $request->query->getIterator()->getArrayCopy();
+        $criteria = isset($param['criteria']) ? $param['criteria'] : [];
+
+        $criteria = array_merge_recursive($criteria, [
+            'order' => ['creationDate DESC']
+        ]);
 
         $serializer = ($request->get('serializer', null))
             ?: [
@@ -113,9 +118,13 @@ class CommentController extends BaseController
 
         $commentObject = $this->getDoctrine()->getManager()
             ->getRepository(Comment::class)
-            ->getCommentList([]);
+            ->getCommentList($criteria);
 
-        return $this->setResponse($commentObject, 200, [], [
+        $response = [
+            'data' => $commentObject
+        ];
+
+        return $this->setResponse($response, 200, [], [
             AbstractNormalizer::ATTRIBUTES => $serializer,
             AbstractNormalizer::IGNORED_ATTRIBUTES => Comment::HIDDEN_FIELDS,
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {

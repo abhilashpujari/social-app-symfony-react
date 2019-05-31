@@ -97,17 +97,25 @@ class ReplyController extends BaseController
      */
     public function replyList(Request $request)
     {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
+        $param = $request->query->getIterator()->getArrayCopy();
+        $criteria = isset($param['criteria']) ? $param['criteria'] : [];
+
+        $criteria = array_merge_recursive($criteria, [
+            'order' => ['creationDate DESC']
+        ]);
 
         $serializer = ($request->get('serializer', null))
             ?: [
                 'body', 'id', 'comment' => ['id'], 'creationDate', 'user' => ['id', 'fullName']
             ];
 
+        $response = [
+            'data' => $commentObject
+        ];
+        
         $replyObject = $this->getDoctrine()->getManager()
             ->getRepository(Reply::class)
-            ->getReplyList([]);
+            ->getReplyList($criteria);
 
         return $this->setResponse($replyObject, 200, [], [
             AbstractNormalizer::ATTRIBUTES => $serializer,
