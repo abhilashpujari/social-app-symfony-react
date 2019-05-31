@@ -109,14 +109,14 @@ class ReplyController extends BaseController
                 'body', 'id', 'comment' => ['id'], 'creationDate', 'user' => ['id', 'fullName']
             ];
 
-        $response = [
-            'data' => $commentObject
-        ];
-        
         $replyObject = $this->getDoctrine()->getManager()
             ->getRepository(Reply::class)
             ->getReplyList($criteria);
 
+        $response = [
+            'data' => $replyObject
+        ];
+        
         return $this->setResponse($replyObject, 200, [], [
             AbstractNormalizer::ATTRIBUTES => $serializer,
             AbstractNormalizer::IGNORED_ATTRIBUTES => Reply::HIDDEN_FIELDS,
