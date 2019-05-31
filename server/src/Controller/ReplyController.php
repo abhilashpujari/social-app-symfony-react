@@ -117,7 +117,7 @@ class ReplyController extends BaseController
             'data' => $replyObject
         ];
         
-        return $this->setResponse($replyObject, 200, [], [
+        return $this->setResponse($response, 200, [], [
             AbstractNormalizer::ATTRIBUTES => $serializer,
             AbstractNormalizer::IGNORED_ATTRIBUTES => Reply::HIDDEN_FIELDS,
             AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
