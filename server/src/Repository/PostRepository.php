@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Core\Doctrine\Criteria\CriteriaParser;
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\QueryException;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,32 +22,32 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-    // /**
-    //  * @return Post[] Returns an array of Post objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param array $criteria
+     * @return array
+     * @throws QueryException
+     */
+    public function getPostList($criteria = [])
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = new QueryBuilder($this->_em);
 
-    /*
-    public function findOneBySomeField($value): ?Post
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb->select("p")
+            ->from(Post::class, "p");
+
+        $criteriaParser = new CriteriaParser($qb, $criteria, $this->getMapper());
+        $criteriaParser->parse();
+
+        return $qb->getQuery()->getResult();
     }
-    */
+
+    /**
+     * @return array
+     */
+    protected function getMapper()
+    {
+        return [
+            'id' => 'p.id',
+            'creationDate' => 'p.creationDate'
+        ];
+    }
 }

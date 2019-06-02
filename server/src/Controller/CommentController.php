@@ -15,6 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
+/**
+ * Class CommentController
+ * @package App\Controller
+ */
 class CommentController extends BaseController
 {
     /**
@@ -28,6 +32,20 @@ class CommentController extends BaseController
      * @throws \App\Exception\HttpBadRequestException
      * @throws \App\Exception\HttpConflictException
      * @throws \App\Exception\ValidationException
+     *
+     *
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="JSON Payload",
+     *     required=true,
+     *     format="application/json",
+     *     @SWG\Schema(
+     *     type="object",
+     *         @SWG\Property(property="body", type="string", example="test content"),
+     *         @SWG\Property(property="post", type="integer", example=1)
+     *     )
+     * )
      *
      * @SWG\Response(
      *     response=200,
@@ -126,10 +144,7 @@ class CommentController extends BaseController
 
         return $this->setResponse($response, 200, [], [
             AbstractNormalizer::ATTRIBUTES => $serializer,
-            AbstractNormalizer::IGNORED_ATTRIBUTES => Comment::HIDDEN_FIELDS,
-            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-                return $object->getId();
-            }
+            AbstractNormalizer::IGNORED_ATTRIBUTES => Comment::HIDDEN_FIELDS
         ]);
     }
 }

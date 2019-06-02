@@ -10,6 +10,7 @@ use App\Exception\ValidationException;
 use App\Service\Validator;
 use Doctrine\ORM\EntityManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
@@ -35,11 +36,24 @@ class AuthController extends BaseController
      * @throws ValidationException
      * @throws \App\Exception\HttpBadRequestException
      *
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="JSON Payload",
+     *     required=true,
+     *     format="application/json",
+     *     @SWG\Schema(
+     *     type="object",
+     *         @SWG\Property(property="email", type="string", example="test@domain.com"),
+     *         @SWG\Property(property="password", type="string", example="password")
+     *     )
+     * )
+     *
      * @SWG\Response(
      *     response=200,
      *     description="Authenticate user"
      * )
-     * @SWG\Tag(name="User")
+     * @SWG\Tag(name="Auth")
      *
      */
     public function authenticate(Validator $validator, JWTEncoderInterface $jwtEncoder)
@@ -104,11 +118,25 @@ class AuthController extends BaseController
      * @throws ValidationException
      * @throws \App\Exception\HttpBadRequestException
      *
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="JSON Payload",
+     *     required=true,
+     *     format="application/json",
+     *     @SWG\Schema(
+     *     type="object",
+     *         @SWG\Property(property="email", type="string", example="test@domain.com"),
+     *         @SWG\Property(property="password", type="string", example="password")
+     *     )
+     * )
+     *
+     *
      * @SWG\Response(
      *     response=200,
      *     description="Register user"
      * )
-     * @SWG\Tag(name="User")
+     * @SWG\Tag(name="Auth")
      *
      */
     public function register(Validator $validator)

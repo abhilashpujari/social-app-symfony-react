@@ -5,6 +5,10 @@ namespace App\Core\Doctrine\Criteria;
 use Doctrine\ORM\QueryBuilder;
 use Exception;
 
+/**
+ * Class CriteriaParser
+ * @package App\Core\Doctrine\Criteria
+ */
 class CriteriaParser
 {
 

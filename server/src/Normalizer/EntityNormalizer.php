@@ -34,6 +34,10 @@ class EntityNormalizer extends ObjectNormalizer
         parent::__construct($classMetadataFactory, $nameConverter, $propertyAccessor, $propertyTypeExtractor);
         // Entity manager
         $this->em = $em;
+
+        $this->setCircularReferenceHandler(function ($object) {
+            return $object->getId();
+        });
     }
 
     /**

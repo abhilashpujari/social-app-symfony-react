@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Core\Doctrine\Criteria\CriteriaParser;
 use App\Entity\Reply;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\QueryException;
@@ -31,10 +32,13 @@ class ReplyRepository extends ServiceEntityRepository
         $qb = new QueryBuilder($this->_em);
 
         $qb->select("r")
-            ->from(Reply::class, "r");
+            ->from(Reply::class, "r")
+            ->leftJoin(
+                "r.comment", "comment"
+            );
 
-        //$criteriaParser = new CriteriaParser($qb, $criteria, $this->getMapper());
-        //$criteriaParser->parse();
+        $criteriaParser = new CriteriaParser($qb, $criteria, $this->getMapper());
+        $criteriaParser->parse();
 
         return $qb->getQuery()->getResult();
     }
@@ -45,6 +49,9 @@ class ReplyRepository extends ServiceEntityRepository
     protected function getMapper()
     {
         return [
+            'id' => 'r.id',
+            'creationDate' => 'r.creationDate',
+            'commentId' => 'comment.id'
         ];
     }
 }

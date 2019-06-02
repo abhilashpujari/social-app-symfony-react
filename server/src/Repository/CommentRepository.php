@@ -46,8 +46,8 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return array
-     */
+    * @return array
+    */
     protected function getMapper()
     {
         return [

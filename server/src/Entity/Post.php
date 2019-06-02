@@ -18,6 +18,13 @@ class Post
     const GUARDED_FIELDS = ['creationDate', 'user'];
 
     /**
+     * The fields that should be hidden.
+     *
+     * @var array
+     */
+    const HIDDEN_FIELDS = [];
+
+    /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
