@@ -26,7 +26,7 @@ class AuthController extends BaseController
     /**
      * Authenticate User
      *
-     * @Route("/authenticate", methods={"POST"})
+     * @Route("/authenticate", methods={"POST"}, name="user_authenticate")
      *
      * @param Validator $validator
      * @param JWTEncoderInterface $jwtEncoder
@@ -58,8 +58,6 @@ class AuthController extends BaseController
      */
     public function authenticate(Validator $validator, JWTEncoderInterface $jwtEncoder)
     {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
         $requestData = $this->getRequestContent();
 
         $validator
@@ -76,6 +74,9 @@ class AuthController extends BaseController
                 true
             )
             ->validate($requestData);
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
 
         /** @var User $user */
         $user = $em->getRepository(User::class)
@@ -109,7 +110,7 @@ class AuthController extends BaseController
     /**
      * User Registration
      *
-     * @Route("/register", methods={"POST"})
+     * @Route("/register", methods={"POST"}, name="user_register")
      *
      * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
@@ -141,8 +142,6 @@ class AuthController extends BaseController
      */
     public function register(Validator $validator)
     {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
         $requestData = $this->getRequestContent();
 
         $validator
@@ -159,6 +158,9 @@ class AuthController extends BaseController
                 true
             )
             ->validate($requestData);
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
 
         /** @var User $user */
         $user = $em->getRepository(User::class)

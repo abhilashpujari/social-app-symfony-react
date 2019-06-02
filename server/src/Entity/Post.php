@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 
@@ -42,6 +43,11 @@ class Post
     private $creationDate;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\PostLike", mappedBy="post")
+     */
+    private $likes;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      * @var User
@@ -54,6 +60,7 @@ class Post
     public function __construct()
     {
         $this->creationDate = new DateTime();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,5 +95,10 @@ class Post
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getLikes()
+    {
+        return $this->likes;
     }
 }

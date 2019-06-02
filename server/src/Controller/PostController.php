@@ -22,7 +22,7 @@ class PostController extends BaseController
     /**
      * Create post
      *
-     * @Route("/post", methods={"POST"})
+     * @Route("/post", methods={"POST"}, name="post_create")
      *
      * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
@@ -39,8 +39,6 @@ class PostController extends BaseController
      */
     public function create(Validator $validator)
     {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
         $requestData = $this->getRequestContent();
 
         $validator
@@ -53,6 +51,9 @@ class PostController extends BaseController
                 'content must be a string or null type'
             )
             ->validate($requestData);
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
 
         $identity = $this->getIdentity();
 
@@ -75,8 +76,9 @@ class PostController extends BaseController
     /**
      * Get post
      *
-     * @Route("/post", methods={"GET"})
+     * @Route("/post", methods={"GET"}, name="post_list")
      *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \App\Exception\HttpBadRequestException
      * @throws \App\Exception\HttpConflictException
@@ -99,7 +101,7 @@ class PostController extends BaseController
 
         $serializer = ($request->get('serializer', null))
             ?: [
-                'body', 'id', 'creationDate', 'user' => ['id', 'fullName']
+                'body', 'id', 'likes' => ['user' => ['id', 'fullName'], 'isLiked'], 'creationDate', 'user' => ['id', 'fullName']
             ];
 
         $limit = ($request->get('limitPerPage') && intval($request->get('limitPerPage')) < 10)

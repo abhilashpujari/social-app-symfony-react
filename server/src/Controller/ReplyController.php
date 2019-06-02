@@ -24,7 +24,7 @@ class ReplyController extends BaseController
     /**
      * Create reply
      *
-     * @Route("/reply", methods={"POST"})
+     * @Route("/reply", methods={"POST"}, name="reply_create")
 
      *
      * @param Validator $validator
@@ -56,8 +56,6 @@ class ReplyController extends BaseController
      */
     public function create(Validator $validator)
     {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
         $requestData = $this->getRequestContent();
 
         $validator
@@ -75,6 +73,9 @@ class ReplyController extends BaseController
             )
             ->validate($requestData);
 
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
         $identity = $this->getIdentity();
 
         /** @var User $user */
@@ -85,8 +86,8 @@ class ReplyController extends BaseController
         $comment = $em->getRepository(Comment::class)
             ->find($requestData->comment);
 
-        if (!$user) {
-            throw new HttpNotFoundException('Comment not found with id' . $requestData->cooment);
+        if (!$comment) {
+            throw new HttpNotFoundException('Comment not found with id' . $requestData->comment);
         }
 
         $reply = $this->deserialize($requestData, Reply::class, [
@@ -105,8 +106,9 @@ class ReplyController extends BaseController
     /**
      * Get reply
      *
-     * @Route("/reply", methods={"GET"})
+     * @Route("/reply", methods={"GET"}, name="reply_list")
      *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \App\Exception\HttpBadRequestException
      * @throws \App\Exception\HttpConflictException

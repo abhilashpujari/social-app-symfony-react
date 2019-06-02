@@ -25,7 +25,7 @@ class PasswordController extends  BaseController
     /**
      * Forgot Password
      *
-     * @Route("/forgot-password", methods={"POST"})
+     * @Route("/forgot-password", methods={"POST"}, name="password_forgot")
      *
      * @param Validator $validator
      * @param CacheItemPoolInterface $redisCache
@@ -60,8 +60,6 @@ class PasswordController extends  BaseController
         Mailer $mailer
     )
     {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
         $requestData = $this->getRequestContent();
 
         $validator
@@ -72,6 +70,9 @@ class PasswordController extends  BaseController
                 true
             )
             ->validate($requestData);
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
 
         /** @var User $user */
         $user = $em->getRepository(User::class)
@@ -100,7 +101,7 @@ class PasswordController extends  BaseController
     /**
      * Update Password
      *
-     * @Route("/reset-password", methods={"PUT"})
+     * @Route("/reset-password", methods={"PUT"}, name="password_reset")
      *
      * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
@@ -130,8 +131,6 @@ class PasswordController extends  BaseController
      */
     public function resetPassword(Validator $validator, CacheItemPoolInterface $redisCache)
     {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
         $requestData = $this->getRequestContent();
 
         $validator
@@ -148,6 +147,9 @@ class PasswordController extends  BaseController
                 true
             )
             ->validate($requestData);
+
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
 
         $token = Token::FORGOT_PASSWORD_PREFIX . $requestData->token;
 

@@ -22,7 +22,7 @@ class AccountController extends BaseController
     /**
      * Update User Account Details
      *
-     * @Route("/account", methods={"PUT"})
+     * @Route("/account", methods={"PUT"}, name="account_update")
      *
      * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
@@ -90,7 +90,7 @@ class AccountController extends BaseController
     /**
      * Get User Account Details
      *
-     * @Route("/account", methods={"GET"})
+     * @Route("/account", methods={"GET"}, name="account_view")
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response

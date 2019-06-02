@@ -25,7 +25,7 @@ class CommentController extends BaseController
     /**
      * Create comment
      *
-     * @Route("/comment", methods={"POST"})
+     * @Route("/comment", methods={"POST"}, name="comment_create")
      *
      * @param Validator $validator
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
@@ -57,8 +57,6 @@ class CommentController extends BaseController
      */
     public function create(Validator $validator)
     {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
         $requestData = $this->getRequestContent();
 
         $validator
@@ -76,6 +74,8 @@ class CommentController extends BaseController
             )
             ->validate($requestData);
 
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
 
         $identity = $this->getIdentity();
 
@@ -87,7 +87,7 @@ class CommentController extends BaseController
         $post = $em->getRepository(Post::class)
             ->find($requestData->post);
 
-        if (!$user) {
+        if (!$post) {
             throw new HttpNotFoundException('Post not found with id' . $requestData->post);
         }
 
@@ -107,7 +107,7 @@ class CommentController extends BaseController
     /**
      * Get comment
      *
-     * @Route("/comment", methods={"GET"})
+     * @Route("/comment", methods={"GET"}, name="comment_list")
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
