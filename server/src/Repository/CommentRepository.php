@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Core\Doctrine\Criteria\CriteriaParser;
+use App\Core\Doctrine\Pagination;
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -24,10 +24,10 @@ class CommentRepository extends ServiceEntityRepository
 
     /**
      * @param array $criteria
-     * @return array
-     * @throws QueryException
+     * @param Pagination $pagination
+     * @return mixed
      */
-    public function getCommentList($criteria = [])
+    public function getCommentList($criteria = [], Pagination $pagination = null)
     {
         $qb = new QueryBuilder($this->_em);
 
@@ -39,10 +39,14 @@ class CommentRepository extends ServiceEntityRepository
                 "c.post", "post"
             );
 
+        $query = $qb->getQuery();
+
         $criteriaParser = new CriteriaParser($qb, $criteria, $this->getMapper());
         $criteriaParser->parse();
 
-        return $qb->getQuery()->getResult();
+        return ($pagination)
+            ? $pagination->getPaginationData($query, true)
+            : ['result' => $query->getResult()];
     }
 
     /**

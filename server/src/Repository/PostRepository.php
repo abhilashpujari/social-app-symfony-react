@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Core\Doctrine\Criteria\CriteriaParser;
+use App\Core\Doctrine\Pagination;
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -24,20 +24,24 @@ class PostRepository extends ServiceEntityRepository
 
     /**
      * @param array $criteria
+     * @param Pagination|null $pagination
      * @return array
-     * @throws QueryException
      */
-    public function getPostList($criteria = [])
+    public function getPostList($criteria = [], Pagination $pagination = null)
     {
         $qb = new QueryBuilder($this->_em);
 
         $qb->select("p")
             ->from(Post::class, "p");
 
+        $query = $qb->getQuery();
+
         $criteriaParser = new CriteriaParser($qb, $criteria, $this->getMapper());
         $criteriaParser->parse();
 
-        return $qb->getQuery()->getResult();
+        return ($pagination)
+            ? $pagination->getPaginationData($query, false)
+            : ['result' => $query->getResult()];
     }
 
     /**

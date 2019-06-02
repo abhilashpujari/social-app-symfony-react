@@ -33,11 +33,19 @@ class Pagination
 
     /**
      * @param Query $query
-     * @param $fetchJoinCollection
+     * @param bool|true $fetchJoinCollection
+     * @return array
      */
     public function getPaginationData(Query $query, $fetchJoinCollection = true)
     {
-        $query->setFirstResult((($this->currentPageNumber - 1) * $this->itemsPerPage))->setMaxResults($this->itemsPerPage);
-        $items = new Paginator($query, $fetchJoinCollection);
+        $paginator = new Paginator($query, $fetchJoinCollection);
+        $pages = ceil(count($paginator) / $this->itemsPerPage);
+        $offset = ($this->currentPageNumber - 1) * $this->itemsPerPage;
+        $query->setFirstResult($offset)->setMaxResults($this->itemsPerPage);
+
+        return [
+            'result' => $paginator, 'currentPage' => $this->currentPageNumber, 'pages' => $pages,
+            'count' => count($paginator), 'offset' => $offset, 'limitPerPage' => $this->itemsPerPage
+        ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Core\Doctrine\Pagination;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Service\Validator;
@@ -90,8 +91,7 @@ class PostController extends BaseController
      */
     public function postList(Request $request)
     {
-        $param = $request->query->getIterator()->getArrayCopy();
-        $criteria = isset($param['criteria']) ? $param['criteria'] : [];
+        $criteria = $request->get('criteria') ? $request->get('criteria') : [];
 
         $criteria = array_merge_recursive($criteria, [
             'order' => ['creationDate DESC']
@@ -102,12 +102,26 @@ class PostController extends BaseController
                 'body', 'id', 'creationDate', 'user' => ['id', 'fullName']
             ];
 
-        $postObject = $this->getDoctrine()->getManager()
+        $limit = ($request->get('limitPerPage') && intval($request->get('limitPerPage')) < 10)
+            ? intval($request->get('limitPerPage'))
+            : 10;
+
+        $pagination = new Pagination(
+            $limit,
+            (($request->get('page')) ? intval($request->get('page')) : 1)
+        );
+
+        $paginatedData = $this->getDoctrine()->getManager()
             ->getRepository(Post::class)
-            ->getPostList($criteria);
+            ->getPostList($criteria, $pagination);
 
         $response = [
-            'data' => $postObject
+            'data' => $paginatedData['result'],
+            'page' => $paginatedData['currentPage'],
+            'count' => $paginatedData['count'],
+            'offset' => $paginatedData['offset'],
+            'limitPerPage' => $paginatedData['limitPerPage'],
+            'criteria' => $criteria
         ];
 
         return $this->setResponse($response, 200, [], [

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Core\Doctrine\Pagination;
 use App\Entity\Comment;
 use App\Entity\Reply;
 use App\Entity\User;
@@ -120,8 +121,7 @@ class ReplyController extends BaseController
      */
     public function replyList(Request $request)
     {
-        $param = $request->query->getIterator()->getArrayCopy();
-        $criteria = isset($param['criteria']) ? $param['criteria'] : [];
+        $criteria = $request->get('criteria') ? $request->get('criteria') : [];
 
         $criteria = array_merge_recursive($criteria, [
             'order' => ['creationDate DESC']
@@ -132,12 +132,27 @@ class ReplyController extends BaseController
                 'body', 'id', 'comment' => ['id'], 'creationDate', 'user' => ['id', 'fullName']
             ];
 
-        $replyObject = $this->getDoctrine()->getManager()
+
+        $limit = ($request->get('limitPerPage') && intval($request->get('limitPerPage')) < 10)
+            ? intval($request->get('limitPerPage'))
+            : 10;
+
+        $pagination = new Pagination(
+            $limit,
+            (($request->get('page')) ? intval($request->get('page')) : 1)
+        );
+
+        $paginatedData = $this->getDoctrine()->getManager()
             ->getRepository(Reply::class)
-            ->getReplyList($criteria);
+            ->getReplyList($criteria, $pagination);
 
         $response = [
-            'data' => $replyObject
+            'data' => $paginatedData['result'],
+            'page' => $paginatedData['currentPage'],
+            'count' => $paginatedData['count'],
+            'offset' => $paginatedData['offset'],
+            'limitPerPage' => $paginatedData['limitPerPage'],
+            'criteria' => $criteria
         ];
         
         return $this->setResponse($response, 200, [], [

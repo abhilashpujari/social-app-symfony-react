@@ -3,9 +3,9 @@
 namespace App\Repository;
 
 use App\Core\Doctrine\Criteria\CriteriaParser;
+use App\Core\Doctrine\Pagination;
 use App\Entity\Reply;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -24,10 +24,10 @@ class ReplyRepository extends ServiceEntityRepository
 
     /**
      * @param array $criteria
+     * @param Pagination|null $pagination
      * @return array
-     * @throws QueryException
      */
-    public function getReplyList($criteria = [])
+    public function getReplyList($criteria = [], Pagination $pagination = null)
     {
         $qb = new QueryBuilder($this->_em);
 
@@ -37,10 +37,14 @@ class ReplyRepository extends ServiceEntityRepository
                 "r.comment", "comment"
             );
 
+        $query = $qb->getQuery();
+
         $criteriaParser = new CriteriaParser($qb, $criteria, $this->getMapper());
         $criteriaParser->parse();
 
-        return $qb->getQuery()->getResult();
+        return ($pagination)
+            ? $pagination->getPaginationData($query, true)
+            : ['result' => $query->getResult()];
     }
 
     /**

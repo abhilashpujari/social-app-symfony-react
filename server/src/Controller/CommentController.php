@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Core\Doctrine\Pagination;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\User;
@@ -108,6 +109,7 @@ class CommentController extends BaseController
      *
      * @Route("/comment", methods={"GET"})
      *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \App\Exception\HttpBadRequestException
      * @throws \App\Exception\HttpConflictException
@@ -122,8 +124,7 @@ class CommentController extends BaseController
      */
     public function commentList(Request $request)
     {
-        $param = $request->query->getIterator()->getArrayCopy();
-        $criteria = isset($param['criteria']) ? $param['criteria'] : [];
+        $criteria = $request->get('criteria') ? $request->get('criteria') : [];
 
         $criteria = array_merge_recursive($criteria, [
             'order' => ['creationDate DESC']
@@ -134,12 +135,26 @@ class CommentController extends BaseController
                 'body', 'id', 'post' => ['id'], 'creationDate', 'user' => ['id', 'fullName']
             ];
 
-        $commentObject = $this->getDoctrine()->getManager()
+        $limit = ($request->get('limitPerPage') && intval($request->get('limitPerPage')) < 10)
+            ? intval($request->get('limitPerPage'))
+            : 10;
+
+        $pagination = new Pagination(
+            $limit,
+            (($request->get('page')) ? intval($request->get('page')) : 1)
+        );
+
+        $paginatedData = $this->getDoctrine()->getManager()
             ->getRepository(Comment::class)
-            ->getCommentList($criteria);
+            ->getCommentList($criteria, $pagination);
 
         $response = [
-            'data' => $commentObject
+            'data' => $paginatedData['result'],
+            'page' => $paginatedData['currentPage'],
+            'count' => $paginatedData['count'],
+            'offset' => $paginatedData['offset'],
+            'limitPerPage' => $paginatedData['limitPerPage'],
+            'criteria' => $criteria
         ];
 
         return $this->setResponse($response, 200, [], [
