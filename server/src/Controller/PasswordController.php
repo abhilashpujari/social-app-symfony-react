@@ -35,6 +35,18 @@ class PasswordController extends  BaseController
      * @throws \App\Exception\HttpConflictException
      * @throws \App\Exception\ValidationException
      *
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="JSON Payload",
+     *     required=true,
+     *     format="application/json",
+     *     @SWG\Schema(
+     *     type="object",
+     *         @SWG\Property(property="email", type="string")
+     *     )
+     * )
+     *
      * @SWG\Response(
      *     response=200,
      *     description="Forgot Password"
@@ -95,6 +107,19 @@ class PasswordController extends  BaseController
      * @throws \App\Exception\HttpBadRequestException
      * @throws \App\Exception\HttpConflictException
      * @throws \App\Exception\ValidationException
+     *
+     * @SWG\Parameter(
+     *     name="body",
+     *     in="body",
+     *     description="JSON Payload",
+     *     required=true,
+     *     format="application/json",
+     *     @SWG\Schema(
+     *     type="object",
+     *         @SWG\Property(property="password", type="string"),
+     *         @SWG\Property(property="token", type="string")
+     *     )
+     * )
      *
      * @SWG\Response(
      *     response=200,

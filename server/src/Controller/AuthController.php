@@ -44,8 +44,8 @@ class AuthController extends BaseController
      *     format="application/json",
      *     @SWG\Schema(
      *     type="object",
-     *         @SWG\Property(property="email", type="string", example="test@domain.com"),
-     *         @SWG\Property(property="password", type="string", example="password")
+     *         @SWG\Property(property="email", type="string"),
+     *         @SWG\Property(property="password", type="string")
      *     )
      * )
      *
@@ -126,8 +126,8 @@ class AuthController extends BaseController
      *     format="application/json",
      *     @SWG\Schema(
      *     type="object",
-     *         @SWG\Property(property="email", type="string", example="test@domain.com"),
-     *         @SWG\Property(property="password", type="string", example="password")
+     *         @SWG\Property(property="email", type="string"),
+     *         @SWG\Property(property="password", type="string")
      *     )
      * )
      *

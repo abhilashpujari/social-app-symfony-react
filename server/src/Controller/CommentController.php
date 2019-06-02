@@ -42,8 +42,8 @@ class CommentController extends BaseController
      *     format="application/json",
      *     @SWG\Schema(
      *     type="object",
-     *         @SWG\Property(property="body", type="string", example="test content"),
-     *         @SWG\Property(property="post", type="integer", example=1)
+     *         @SWG\Property(property="body", type="string"),
+     *         @SWG\Property(property="post", type="integer")
      *     )
      * )
      *
