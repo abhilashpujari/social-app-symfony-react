@@ -44,7 +44,7 @@ class PostController extends BaseController
         $validator
             ->setValidator(
                 v::oneOf(
-                    v::notEmpty()->noWhitespace()->stringType(),
+                    v::notEmpty()->stringType(),
                     v::nullType()
                 ),
                 'content',
@@ -71,7 +71,8 @@ class PostController extends BaseController
         $em->flush();
 
         $serializer = [
-            'body', 'id', 'likes' => ['user' => ['id', 'fullName'], 'isLiked'], 'creationDate', 'user' => ['id', 'fullName']
+            'body', 'id', 'likeCount', 'dislikeCount', 'likes' => ['user' => ['id', 'fullName'], 'isLiked'],
+            'creationDate', 'user' => ['id', 'fullName']
         ];
 
         return $this->setResponse($post, 200, [], [
