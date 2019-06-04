@@ -70,7 +70,14 @@ class PostController extends BaseController
         $em->persist($post);
         $em->flush();
 
-        return $this->setResponse('Post created successfully');
+        $serializer = [
+            'body', 'id', 'likes' => ['user' => ['id', 'fullName'], 'isLiked'], 'creationDate', 'user' => ['id', 'fullName']
+        ];
+
+        return $this->setResponse($post, 200, [], [
+            AbstractNormalizer::ATTRIBUTES => $serializer,
+            AbstractNormalizer::IGNORED_ATTRIBUTES => Post::HIDDEN_FIELDS
+        ]);
     }
 
     /**
@@ -101,7 +108,8 @@ class PostController extends BaseController
 
         $serializer = ($request->get('serializer', null))
             ?: [
-                'body', 'id', 'likes' => ['user' => ['id', 'fullName'], 'isLiked'], 'creationDate', 'user' => ['id', 'fullName']
+                'body', 'id', 'likeCount', 'dislikeCount', 'likes' => ['user' => ['id', 'fullName'], 'isLiked'],
+                'creationDate', 'user' => ['id', 'fullName']
             ];
 
         $limit = ($request->get('limitPerPage') && intval($request->get('limitPerPage')) < 10)

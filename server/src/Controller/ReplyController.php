@@ -100,7 +100,12 @@ class ReplyController extends BaseController
         $em->persist($reply);
         $em->flush();
 
-       return $this->setResponse('Reply created successfully');
+        $serializer = ['body', 'id', 'comment' => ['id'], 'creationDate', 'user' => ['id', 'fullName']];
+
+        return $this->setResponse($reply, 200, [], [
+            AbstractNormalizer::ATTRIBUTES => $serializer,
+            AbstractNormalizer::IGNORED_ATTRIBUTES => Reply::HIDDEN_FIELDS
+        ]);
     }
 
     /**

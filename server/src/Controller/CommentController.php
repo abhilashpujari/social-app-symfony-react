@@ -101,7 +101,14 @@ class CommentController extends BaseController
         $em->persist($comment);
         $em->flush();
 
-       return $this->setResponse('Comment created successfully');
+        $serializer = [
+            'body', 'id', 'post' => ['id'], 'creationDate', 'user' => ['id', 'fullName']
+        ];
+
+        return $this->setResponse($comment, 200, [], [
+            AbstractNormalizer::ATTRIBUTES => $serializer,
+            AbstractNormalizer::IGNORED_ATTRIBUTES => Comment::HIDDEN_FIELDS
+        ]);
     }
 
     /**

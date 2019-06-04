@@ -101,4 +101,32 @@ class Post
     {
         return $this->likes;
     }
+
+    public function getLikeCount()
+    {
+        $totalLikes = 0;
+        if ($this->likes) {
+            foreach($this->likes as $like) {
+                if ($like->getIsLiked()) {
+                    $totalLikes += 1;
+                }
+            }
+        }
+
+        return $totalLikes;
+    }
+
+    public function getDislikeCount()
+    {
+        $totalDislikes = 0;
+        if ($this->likes) {
+            foreach($this->likes as $like) {
+                if (!$like->getIsLiked()) {
+                    $totalDislikes += 1;
+                }
+            }
+        }
+
+        return $totalDislikes;
+    }
 }

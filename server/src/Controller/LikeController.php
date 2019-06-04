@@ -13,6 +13,7 @@ use Respect\Validation\Validator as v;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 /**
  * Class LikeController
@@ -113,6 +114,13 @@ class LikeController extends BaseController
         $em->persist($postLike);
         $em->flush();
 
-       return $this->setResponse('Comment created successfully');
+        $serializer = [
+            'body', 'id', 'likeCount', 'dislikeCount', 'likes' => ['user' => ['id', 'fullName'], 'isLiked'], 'creationDate', 'user' => ['id', 'fullName']
+        ];
+
+        return $this->setResponse($post, 200, [], [
+            AbstractNormalizer::ATTRIBUTES => $serializer,
+            AbstractNormalizer::IGNORED_ATTRIBUTES => Post::HIDDEN_FIELDS
+        ]);
     }
 }
