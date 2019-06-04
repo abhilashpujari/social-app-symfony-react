@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import {
   Container,
   Form,
-  Button
+  Button,
+  Row,
+  Col
 } from 'react-bootstrap';
 
 import { Link } from "react-router-dom";
@@ -25,6 +27,8 @@ class SignUp extends Component {
     };
 
     this.validationRules = {
+      firstName: 'required|min:3',
+      lastName: 'required|min:3',
       password: 'required|min:6',
       email: 'required|email'
     };
@@ -51,7 +55,7 @@ class SignUp extends Component {
   }
 
   render() {
-    const { email, password } = this.state;
+    const { firstName, lastName, email, password } = this.state;
 
     return (
       <Container>
@@ -60,28 +64,47 @@ class SignUp extends Component {
             <div className="logo__container text-center">
               <img className="logo" src={logo} alt="Logo" />
             </div>
-            <Form className="sign-up__form">
-              <Form.Group controlId="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" name="email" placeholder="test@gmail.com" value={email} onChange={this.handleChange} />
-              </Form.Group>
 
-              <Form.Group controlId="password">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} />
-              </Form.Group>
-              <Form.Group>
-                <Button variant="primary" type="submit" block onClick={this.signUp}>
-                  Sign Up
+            <Form className="sign-up__form">
+              <Row>
+                <Col xs={12} lg={6}>
+                  <Form.Group controlId="email">
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control type="text" name="firstName" placeholder="First Name" value={firstName} onChange={this.handleChange} />
+                  </Form.Group>
+                </Col>
+                <Col xs={12} lg={6}>
+                  <Form.Group controlId="email">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control type="text" name="lastName" placeholder="Last Name" value={lastName} onChange={this.handleChange} />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group controlId="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" name="email" placeholder="test@gmail.com" value={email} onChange={this.handleChange} />
+                  </Form.Group>
+
+                  <Form.Group controlId="password">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} />
+                  </Form.Group>
+                  <Form.Group>
+                    <Button variant="primary" type="submit" block onClick={this.signUp}>
+                      Sign Up
                 </Button>
-              </Form.Group>
-              <Form.Group className="text-center">
-                Already have an account
+                  </Form.Group>
+                  <Form.Group className="text-center">
+                    Already have an account
                 <Link to="/">&nbsp;Login</Link>
-              </Form.Group>
-              <Form.Group className="text-center">
-                <Link to="/forgot-password">&nbsp;Forgot Password</Link>
-              </Form.Group>
+                  </Form.Group>
+                  <Form.Group className="text-center">
+                    <Link to="/forgot-password">&nbsp;Forgot Password</Link>
+                  </Form.Group>
+                </Col>
+              </Row>
             </Form>
           </div>
         </div>
