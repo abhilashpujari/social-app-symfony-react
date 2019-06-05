@@ -22,8 +22,13 @@ class SignUp extends Component {
     super(props);
 
     this.state = {
-      email: "",
-      password: ""
+      formData: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: ""
+      },
+      isButtonLoading: false
     };
 
     this.validationRules = {
@@ -35,28 +40,40 @@ class SignUp extends Component {
   }
 
   handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    let formData = { ...this.state.formData };
+    formData[e.target.name] = e.target.value;
+    this.setState({
+      formData
+    });
   }
 
   signUp = (e) => {
     e.preventDefault();
-    let validator = new Validator(this.state, this.validationRules);
+    let validator = new Validator(this.state.formData, this.validationRules);
 
     if (validator.isValid()) {
-      api
-        .post(`${config.endpoints.api}`, '/register', this.state)
-        .then((response) => {
-          flashMessenger.show('success', 'Registered successfully');
-          this.props.history.push('/');
-        }).catch(error => flashMessenger.show('error', error.message));
+      this.setState({ isButtonLoading: true }, () => {
+        api
+          .post(`${config.endpoints.api}`, '/register', this.state.formData)
+          .then((response) => {
+            this.setState({ isButtonLoading: false });
+            flashMessenger.show('success', 'Registered successfully');
+            this.props.history.push('/');
+          }).catch((error) => {
+            this.setState({ isButtonLoading: false });
+            flashMessenger.show('error', error.message);
+          });
+      });
+
     } else {
       flashMessenger.show('error', validator.getErrorMessages());
     }
   }
 
   render() {
-    const { firstName, lastName, email, password } = this.state;
-
+    const { firstName, lastName, email, password } = this.state.formData;
+    const { isButtonLoading } = this.state;
+    
     return (
       <Container>
         <div className="sign-up">
@@ -68,13 +85,13 @@ class SignUp extends Component {
             <Form className="sign-up__form">
               <Row>
                 <Col xs={12} lg={6}>
-                  <Form.Group controlId="email">
+                  <Form.Group controlId="firstName">
                     <Form.Label>First Name</Form.Label>
                     <Form.Control type="text" name="firstName" placeholder="First Name" value={firstName} onChange={this.handleChange} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} lg={6}>
-                  <Form.Group controlId="email">
+                  <Form.Group controlId="lastName">
                     <Form.Label>Last Name</Form.Label>
                     <Form.Control type="text" name="lastName" placeholder="Last Name" value={lastName} onChange={this.handleChange} />
                   </Form.Group>
@@ -92,13 +109,13 @@ class SignUp extends Component {
                     <Form.Control type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} />
                   </Form.Group>
                   <Form.Group>
-                    <Button variant="primary" type="submit" block onClick={this.signUp}>
-                      Sign Up
-                </Button>
+                    <Button variant="primary" type="submit" block disabled={isButtonLoading} onClick={!isButtonLoading ? this.signUp : null}>
+                      {isButtonLoading ? 'Signing up...' : 'Sign Up'}
+                    </Button>
                   </Form.Group>
                   <Form.Group className="text-center">
                     Already have an account
-                <Link to="/">&nbsp;Login</Link>
+                    <Link to="/">&nbsp;Login</Link>
                   </Form.Group>
                   <Form.Group className="text-center">
                     <Link to="/forgot-password">&nbsp;Forgot Password</Link>

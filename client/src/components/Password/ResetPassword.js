@@ -20,7 +20,10 @@ class ResetPassword extends Component {
     super(props);
 
     this.state = {
-      password: ""
+      formData: {
+        password: ""
+      },
+      isButtonLoading: false
     };
 
     this.validationRules = {
@@ -29,35 +32,47 @@ class ResetPassword extends Component {
   }
 
   handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    let formData = { ...this.state.formData };
+    formData[e.target.name] = e.target.value;
+    this.setState({
+      formData
+    });
   }
 
   resetPassword = (e) => {
     e.preventDefault();
 
-    let validator = new Validator(this.state, this.validationRules);
+    let validator = new Validator(this.state.formData, this.validationRules);
     const { token } = this.props.match.params;
-    const { password } = this.state;
-    
+    const { password } = this.state.formData;
+
     const requestData = {
       password,
       token
     };
 
     if (validator.isValid()) {
-      api
-        .put(`${config.endpoints.api}`, '/reset-password', requestData)
-        .then((response) => {
-          flashMessenger.show('success', 'Password Reset successfully!!');
-          this.props.history.push('/');
-        }).catch(error => flashMessenger.show('error', error.message));
+      this.setState({ isButtonLoading: true }, () => {
+        api
+          .put(`${config.endpoints.api}`, '/reset-password', requestData)
+          .then((response) => {
+            this.setState({ isButtonLoading: false });
+            flashMessenger.show('success', 'Password Reset successfully!!');
+            this.props.history.push('/');
+          }).catch(error => {
+            this.setState({ isButtonLoading: false });
+            flashMessenger.show('error', error.message)
+          });
+      });
+
     } else {
       flashMessenger.show('error', validator.getErrorMessages());
     }
   }
 
   render() {
-    const { password } = this.state;
+    const { password } = this.state.formData;
+    const { isButtonLoading } = this.state;
 
     return (
       <Container>
@@ -72,11 +87,10 @@ class ResetPassword extends Component {
                 <Form.Control type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} />
               </Form.Group>
               <Form.Group>
-                <Button variant="primary" type="submit" block onClick={this.resetPassword}>
-                  Reset Password
+                <Button variant="primary" type="submit" block disabled={isButtonLoading} onClick={!isButtonLoading ? this.resetPassword : null}>
+                  {isButtonLoading ? 'Resetting...' : 'Reset Password'}
                 </Button>
               </Form.Group>
-
               <Form.Group className="text-center">
                 <Link to="/">&nbsp;Login</Link>
               </Form.Group>

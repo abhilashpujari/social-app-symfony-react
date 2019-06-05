@@ -20,7 +20,10 @@ class ForgotPassword extends Component {
     super(props);
 
     this.state = {
-      email: ""
+      formData: {
+        email: ""
+      },
+      isButtonLoading: false
     };
 
     this.validationRules = {
@@ -29,27 +32,38 @@ class ForgotPassword extends Component {
   }
 
   handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    let formData = { ...this.state.formData };
+    formData[e.target.name] = e.target.value;
+    this.setState({
+      formData
+    });
   }
 
   forgotPassword = (e) => {
     e.preventDefault();
-    let validator = new Validator(this.state, this.validationRules);
+    let validator = new Validator(this.state.formData, this.validationRules);
 
     if (validator.isValid()) {
-      api
-        .post(`${config.endpoints.api}`, '/forgot-password', this.state)
-        .then((response) => {
-          flashMessenger.show('success', 'Reset link sent to your email');
-          this.props.history.push('/');
-        }).catch(error => flashMessenger.show('error', error.message));
+      this.setState({ isButtonLoading: true }, () => {
+        api
+          .post(`${config.endpoints.api}`, '/forgot-password', this.state.formData)
+          .then((response) => {
+            this.setState({ isButtonLoading: false });
+            flashMessenger.show('success', 'Reset link sent to your email');
+            this.props.history.push('/');
+          }).catch(error => {
+            this.setState({ isButtonLoading: false });
+            flashMessenger.show('error', error.message)
+          });
+      });
     } else {
       flashMessenger.show('error', validator.getErrorMessages());
     }
   }
 
   render() {
-    const { email } = this.state;
+    const { email } = this.state.formData;
+    const { isButtonLoading } = this.state;
 
     return (
       <Container>
@@ -64,11 +78,10 @@ class ForgotPassword extends Component {
                 <Form.Control type="email" name="email" placeholder="test@gmail.com" value={email} onChange={this.handleChange} />
               </Form.Group>
               <Form.Group>
-                <Button variant="primary" type="submit" block onClick={this.forgotPassword}>
-                  Sent Reset Link
+                <Button variant="primary" type="submit" block disabled={isButtonLoading} onClick={!isButtonLoading ? this.forgotPassword : null}>
+                  {isButtonLoading ? 'Senting...' : 'Sent Reset Link'}
                 </Button>
               </Form.Group>
-
               <Form.Group className="text-center">
                 <Link to="/">&nbsp;Login</Link>
               </Form.Group>

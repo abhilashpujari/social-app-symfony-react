@@ -146,13 +146,13 @@ class AuthController extends BaseController
 
         $validator
             ->setValidator(
-                v::stringType()->notEmpty()->min(3),
+                v::stringType()->notEmpty()->length(3),
                 'firstName',
                 'firstName is required and must be a string of min length 3',
                 true
             )
             ->setValidator(
-                v::stringType()->notEmpty()->min(3),
+                v::stringType()->notEmpty()->length(3),
                 'lastName',
                 'lastName is required and must be a string of min length 3',
                 true

@@ -20,8 +20,11 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      email: "",
-      password: ""
+      formData: {
+        email: "",
+        password: ""
+      },
+      isButtonLoading: false
     };
 
     this.validationRules = {
@@ -31,26 +34,37 @@ class Login extends Component {
   }
 
   handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    let formData = { ...this.state.formData };
+    formData[e.target.name] = e.target.value;
+    this.setState({
+      formData
+    });
   }
 
   login = (e) => {
     e.preventDefault();
-    let validator = new Validator(this.state, this.validationRules);
+    let validator = new Validator(this.state.formData, this.validationRules);
 
     if (validator.isValid()) {
-      api
-        .post(`${config.endpoints.api}`, '/authenticate', this.state)
-        .then((response) => {
-          this.props.history.push('/home');
-        }).catch(error => flashMessenger.show('error', error.message));
+      this.setState({ isButtonLoading: true }, () => {
+        api
+          .post(`${config.endpoints.api}`, '/authenticate', this.state.formData)
+          .then((response) => {
+            this.setState({ isButtonLoading: false });
+            this.props.history.push('/home');
+          }).catch(error => {
+            this.setState({ isButtonLoading: false });
+            flashMessenger.show('error', error.message);
+          });
+      });
     } else {
       flashMessenger.show('error', validator.getErrorMessages());
     }
   }
 
   render() {
-    const { email, password } = this.state;
+    const { email, password } = this.state.formData;
+    const { isButtonLoading } = this.state;
 
     return (
       <Container>
@@ -70,8 +84,8 @@ class Login extends Component {
                 <Form.Control type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} />
               </Form.Group>
               <Form.Group>
-                <Button variant="primary" type="submit" block onClick={this.login}>
-                  Login
+                <Button variant="primary" type="submit" block disabled={isButtonLoading} onClick={!isButtonLoading ? this.login : null}>
+                  {isButtonLoading ? 'Login...' : 'Login'}
                 </Button>
               </Form.Group>
               <Form.Group className="text-center">
