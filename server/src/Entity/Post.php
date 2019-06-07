@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helpers\TextHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
@@ -75,7 +76,7 @@ class Post
 
     public function setContent(?string $content): self
     {
-        $this->content = $content;
+        $this->content = TextHelper::purifyContent($content);
 
         return $this;
     }

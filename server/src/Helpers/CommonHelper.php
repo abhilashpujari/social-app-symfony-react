@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Helpers;
 
 use Ramsey\Uuid\Uuid;
 
@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
  * Class Helper
  * @package App
  */
-class Helper
+class CommonHelper
 {
     public static function generateUuid()
     {

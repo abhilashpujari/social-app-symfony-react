@@ -311,7 +311,13 @@
     "symfony/orm-pack": {
         "version": "v1.0.6"
     },
+    "symfony/polyfill-intl-grapheme": {
+        "version": "v1.11.0"
+    },
     "symfony/polyfill-intl-idn": {
+        "version": "v1.11.0"
+    },
+    "symfony/polyfill-intl-normalizer": {
         "version": "v1.11.0"
     },
     "symfony/polyfill-mbstring": {
@@ -422,6 +428,12 @@
     },
     "twig/twig": {
         "version": "v2.7.2"
+    },
+    "voku/anti-xss": {
+        "version": "4.1.12"
+    },
+    "voku/portable-utf8": {
+        "version": "5.4.7"
     },
     "webmozart/assert": {
         "version": "1.4.0"

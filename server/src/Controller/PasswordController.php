@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Helper;
+use App\Helpers\CommonHelper;
 use App\Service\Mailer;
 use App\Service\Validator;
 use App\Token;
@@ -82,7 +82,7 @@ class PasswordController extends  BaseController
             throw new NotFoundHttpException('Invalid User!!');
         }
 
-        $token = Helper::generateUuid();
+        $token = CommonHelper::generateUuid();
 
         /** @var CacheItemInterface $cachedItem */
         $cachedItem = $redisCache->getItem(Token::FORGOT_PASSWORD_PREFIX . $token);

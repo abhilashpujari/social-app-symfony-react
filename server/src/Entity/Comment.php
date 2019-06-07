@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Helpers\TextHelper;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 
@@ -75,7 +76,7 @@ class Comment
 
     public function setBody(string $body): self
     {
-        $this->body = $body;
+        $this->body = TextHelper::purifyContent($body);
 
         return $this;
     }
