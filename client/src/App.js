@@ -4,12 +4,16 @@ import 'toastr/build/toastr.min.css';
 import './styles/global.scss';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Routes from './Routes';
+import Header from './components/Header';
 
 function App() {
   return (
-    <Router>
-      <Routes />
-    </Router>
+    <>
+      <Header />
+      <Router>
+        <Routes />
+      </Router>
+    </>
   );
 }
 
