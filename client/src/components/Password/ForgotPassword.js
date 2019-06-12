@@ -50,7 +50,7 @@ class ForgotPassword extends Component {
           .then((response) => {
             this.setState({ isButtonLoading: false });
             flashMessenger.show('success', 'Reset link sent to your email');
-            this.props.history.push('/');
+            window.location.href = '/';
           }).catch(error => {
             this.setState({ isButtonLoading: false });
             flashMessenger.show('error', error.message)

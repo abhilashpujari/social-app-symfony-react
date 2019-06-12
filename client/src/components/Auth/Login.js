@@ -51,7 +51,7 @@ class Login extends Component {
           .post(`${config.endpoints.api}`, '/authenticate', this.state.formData)
           .then((response) => {
             this.setState({ isButtonLoading: false });
-            this.props.history.push('/home');
+            window.location.href = '/home';
           }).catch(error => {
             this.setState({ isButtonLoading: false });
             flashMessenger.show('error', error.message);
