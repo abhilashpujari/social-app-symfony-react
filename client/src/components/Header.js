@@ -14,23 +14,26 @@ const Header = () => {
 
   if (identity.isAuthenticated()) {
     return (
-      <Navbar bg="light">
-        <Navbar.Brand href="/home">React-Bootstrap</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link href="/home">Home</Nav.Link>
-            <NavDropdown title={
-              <div style={{ display: 'inline-block' }}>
-                <FontAwesomeIcon icon={faCog} />
-              </div>
-            } id="basic-nav-dropdown">
-              <NavDropdown.Item href="/account">My Account</NavDropdown.Item>
-              <NavDropdown.Item onClick={(e) => { logout(e) }}>Logout</NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+      <header className="header">
+        <Navbar fixed="top" bg="primary" variant="dark" expand="lg">
+          <Navbar.Brand href="/home">Sociapp</Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbar-nav" />
+          <Navbar.Collapse id="navbar-nav" className="justify-content-end">
+            <Nav>
+              <Nav.Link href="/home">Home</Nav.Link>
+              <NavDropdown className="dropdown__setting" title={
+                <span>
+                  <FontAwesomeIcon icon={faCog} />
+                </span>
+              } id="nav-dropdown">
+                <NavDropdown.Item href="/account">My Account</NavDropdown.Item>
+                <NavDropdown.Item onClick={(e) => { logout(e) }}>Logout</NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+      </header>
+
     )
   } else {
     return (<></>);

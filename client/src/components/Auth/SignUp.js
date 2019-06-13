@@ -9,7 +9,6 @@ import {
 
 import { Link } from "react-router-dom";
 
-import logo from '../../logo.png';
 import '../../styles/components/sign-up.scss';
 
 import flashMessenger from '../../utils/flashMessenger';
@@ -73,13 +72,13 @@ class SignUp extends Component {
   render() {
     const { firstName, lastName, email, password } = this.state.formData;
     const { isButtonLoading } = this.state;
-    
+
     return (
       <Container>
         <div className="sign-up">
           <div className="sign-up__box">
             <div className="logo__container text-center">
-              <img className="logo" src={logo} alt="Logo" />
+              <img className="logo" src="/logo.png" alt="Logo" />
             </div>
 
             <Form className="sign-up__form">

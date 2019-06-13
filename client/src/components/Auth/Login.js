@@ -7,7 +7,6 @@ import {
 
 import { Link } from "react-router-dom";
 
-import logo from '../../logo.png';
 import '../../styles/components/login.scss';
 
 import flashMessenger from '../../utils/flashMessenger';
@@ -71,7 +70,7 @@ class Login extends Component {
         <div className="login">
           <div className="login__box">
             <div className="logo__container text-center">
-              <img className="logo" src={logo} alt="Logo" />
+              <img className="logo" src="/logo.png" alt="Logo" />
             </div>
             <Form className="login__form">
               <Form.Group controlId="email">

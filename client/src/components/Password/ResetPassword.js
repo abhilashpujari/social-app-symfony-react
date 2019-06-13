@@ -7,7 +7,6 @@ import {
 
 import { Link } from "react-router-dom";
 
-import logo from '../../logo.png';
 import '../../styles/components/change-password.scss';
 
 import flashMessenger from '../../utils/flashMessenger';
@@ -79,7 +78,7 @@ class ResetPassword extends Component {
         <div className="change-password">
           <div className="change-password__box">
             <div className="logo__container text-center">
-              <img className="logo" src={logo} alt="Logo" />
+              <img className="logo" src="/logo.png" alt="Logo" />
             </div>
             <Form className="change-password__form">
               <Form.Group controlId="password">

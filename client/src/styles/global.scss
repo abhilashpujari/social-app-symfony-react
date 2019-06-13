@@ -9,5 +9,15 @@
 @import "basics/buttons.scss";
 
 body {
-    font-family: $primary-font;
+  font-family: $primary-font;
+  padding-top: 70px;
+}
+
+.header {
+  .dropdown__setting {
+    .dropdown-menu {
+      right: 0;
+      left: unset;
+    }
+  }
 }

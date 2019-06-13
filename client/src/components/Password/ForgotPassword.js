@@ -7,7 +7,6 @@ import {
 
 import { Link } from "react-router-dom";
 
-import logo from '../../logo.png';
 import '../../styles/components/forgot-password.scss';
 
 import flashMessenger from '../../utils/flashMessenger';
@@ -70,7 +69,7 @@ class ForgotPassword extends Component {
         <div className="forgot-password">
           <div className="forgot-password__box">
             <div className="logo__container text-center">
-              <img className="logo" src={logo} alt="Logo" />
+              <img className="logo" src="/logo.png" alt="Logo" />
             </div>
             <Form className="forgot-password__form">
               <Form.Group controlId="email">
