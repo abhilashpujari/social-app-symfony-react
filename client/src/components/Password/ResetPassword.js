@@ -13,7 +13,8 @@ import flashMessenger from '../../utils/flashMessenger';
 import Validator from '../../utils/validator';
 import api from '../../utils/api';
 import config from '../../config/index';
-
+import routeConfig from '../../routeConfig';
+  
 class ResetPassword extends Component {
   constructor(props) {
     super(props);
@@ -57,7 +58,7 @@ class ResetPassword extends Component {
           .then((response) => {
             this.setState({ isButtonLoading: false });
             flashMessenger.show('success', 'Password Reset successfully!!');
-            window.location.href = '/';
+            window.location.href = routeConfig.login;
           }).catch(error => {
             this.setState({ isButtonLoading: false });
             flashMessenger.show('error', error.message)
@@ -91,7 +92,7 @@ class ResetPassword extends Component {
                 </Button>
               </Form.Group>
               <Form.Group className="text-center">
-                <Link to="/">&nbsp;Login</Link>
+                <Link to={routeConfig.login}>&nbsp;Login</Link>
               </Form.Group>
             </Form>
           </div>

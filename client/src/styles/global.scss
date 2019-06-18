@@ -10,7 +10,10 @@
 
 body {
   font-family: $primary-font;
-  padding-top: 70px;
+
+  &.authenticated-route {
+    padding-top: 70px;
+  }
 }
 
 .header {

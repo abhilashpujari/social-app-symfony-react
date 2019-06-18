@@ -4,12 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCog } from '@fortawesome/free-solid-svg-icons'
 
 import identity from '../utils/identity';
+import routeConfig from '../routeConfig';
 
 const Header = () => {
   const logout = (e) => {
     e.preventDefault();
     identity.clearIdentity();
-    window.location.href = '/';
+    window.location.href = routeConfig.login;
   }
 
   if (identity.isAuthenticated()) {
@@ -20,7 +21,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls="navbar-nav" />
           <Navbar.Collapse id="navbar-nav" className="justify-content-end">
             <Nav>
-              <Nav.Link href="/home">Home</Nav.Link>
+              <Nav.Link>Home</Nav.Link>
               <NavDropdown className="dropdown__setting" title={
                 <span>
                   <FontAwesomeIcon icon={faCog} />

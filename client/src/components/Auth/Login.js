@@ -13,6 +13,7 @@ import flashMessenger from '../../utils/flashMessenger';
 import Validator from '../../utils/validator';
 import api from '../../utils/api';
 import config from '../../config/index';
+import routeConfig from '../../routeConfig';
 
 class Login extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class Login extends Component {
           .post(`${config.endpoints.api}`, '/authenticate', this.state.formData)
           .then((response) => {
             this.setState({ isButtonLoading: false });
-            window.location.href = '/home';
+            window.location.href = routeConfig.home;
           }).catch(error => {
             this.setState({ isButtonLoading: false });
             flashMessenger.show('error', error.message);
@@ -89,10 +90,10 @@ class Login extends Component {
               </Form.Group>
               <Form.Group className="text-center">
                 Don't have an account
-                <Link to="/signup">&nbsp;Sign up</Link>
+                <Link to={routeConfig.signup}>&nbsp;Sign up</Link>
               </Form.Group>
               <Form.Group className="text-center">
-                <Link to="/forgot-password">&nbsp;Forgot Password</Link>
+                <Link to={routeConfig.forgotPassword}>&nbsp;Forgot Password</Link>
               </Form.Group>
             </Form>
           </div>

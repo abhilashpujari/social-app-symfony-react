@@ -8,6 +8,8 @@ import {
 
 import { Link } from "react-router-dom";
 
+import routeConfig from '../routeConfig';
+
 function PageNotFound() {
   return (
     <div className="error__404">
@@ -21,7 +23,7 @@ function PageNotFound() {
         </Row>
         <Row>
           <Col className="text-center">
-            <Link className="btn btn-primary btn-home-link" to="/">Go Home Page</Link>
+            <Link className="btn btn-primary btn-home-link" to={routeConfig.login}>Go Home Page</Link>
           </Col>
         </Row>
       </Container>

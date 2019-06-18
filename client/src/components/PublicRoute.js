@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 
 import identity from '../utils/identity';
+import routeConfig from '../routeConfig';
 
 function PublicRoute({ component: Component, ...rest }) {
   return (
@@ -16,7 +17,7 @@ function PublicRoute({ component: Component, ...rest }) {
         ) : (
             <Redirect
               to={{
-                pathname: "/home"
+                pathname: routeConfig.home
               }}
             />
           )

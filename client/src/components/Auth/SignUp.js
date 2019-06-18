@@ -15,6 +15,7 @@ import flashMessenger from '../../utils/flashMessenger';
 import Validator from '../../utils/validator';
 import api from '../../utils/api';
 import config from '../../config/index';
+import routeConfig from '../../routeConfig';
 
 class SignUp extends Component {
   constructor(props) {
@@ -57,7 +58,7 @@ class SignUp extends Component {
           .then((response) => {
             this.setState({ isButtonLoading: false });
             flashMessenger.show('success', 'Registered successfully');
-            window.location.href = '/';
+            window.location.href = routeConfig.login;
           }).catch((error) => {
             this.setState({ isButtonLoading: false });
             flashMessenger.show('error', error.message);
@@ -114,10 +115,10 @@ class SignUp extends Component {
                   </Form.Group>
                   <Form.Group className="text-center">
                     Already have an account
-                    <Link to="/">&nbsp;Login</Link>
+                    <Link to={routeConfig.login}>&nbsp;Login</Link>
                   </Form.Group>
                   <Form.Group className="text-center">
-                    <Link to="/forgot-password">&nbsp;Forgot Password</Link>
+                    <Link to={routeConfig.forgotPassword}>&nbsp;Forgot Password</Link>
                   </Form.Group>
                 </Col>
               </Row>

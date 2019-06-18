@@ -10,13 +10,15 @@ import PageNotFound from './components/PageNotFound';
 import Home from './components/Home';
 import PublicRoute from './components/PublicRoute';
 
+import routeConfig from './routeConfig';
+
 const Routes = () => (
   <Switch>
-    <ProtectedRoute exact path="/home" component={Home} />
-    <PublicRoute exact path="/" component={Login} />
-    <PublicRoute exact path="/reset-password/:token" component={ResetPassword} />
-    <PublicRoute exact path="/forgot-password" component={ForgotPassword} />
-    <PublicRoute exact path="/signup" component={SignUp} />
+    <ProtectedRoute exact path={routeConfig.home} component={Home} />
+    <PublicRoute exact path={routeConfig.login} component={Login} />
+    <PublicRoute exact path={routeConfig.resetPassword} component={ResetPassword} />
+    <PublicRoute exact path={routeConfig.forgotPassword} component={ForgotPassword} />
+    <PublicRoute exact path={routeConfig.signup} component={SignUp} />
     <PublicRoute path="*" component={PageNotFound} />
   </Switch>
 );

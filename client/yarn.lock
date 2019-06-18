@@ -6570,6 +6570,11 @@ mute-stream@0.0.7:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
 
+named-urls@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/named-urls/-/named-urls-1.4.0.tgz#8b60cce70fce3a296f33bf34bf6a2acb2da8dcb1"
+  integrity sha512-mvckMTM/nJLOiqmPqDPRTNyfQwY5ojeQsuKcoJiRSFSLu6qu9c0vgEOFiYLHOLqr0S/1Cb3Ko9kB1v/yp+L8aQ==
+
 nan@^2.12.1, nan@^2.13.2:
   version "2.13.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.13.2.tgz#f51dc7ae66ba7d5d55e1e6d4d8092e802c9aefe7"

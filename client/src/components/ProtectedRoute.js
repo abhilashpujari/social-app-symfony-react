@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 
 import identity from '../utils/identity';
+import routeConfig from '../routeConfig';
 
 function ProtectedRoute({ component: Component, ...rest }) {
   return (
@@ -16,7 +17,7 @@ function ProtectedRoute({ component: Component, ...rest }) {
         ) : (
             <Redirect
               to={{
-                pathname: "/"
+                pathname: routeConfig.login
               }}
             />
           )
