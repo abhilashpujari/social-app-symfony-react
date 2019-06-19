@@ -17,10 +17,8 @@ function PostList() {
     api
       .get(`${config.endpoints.api}`, '/post')
       .then((response) => {
-        setPost(response.result);
-        setCreatePostButtonLoading(false);
+        setPost(response.data);
       }).catch(error => {
-        setCreatePostButtonLoading(false);
         flashMessenger.show('error', error.message);
       });
   }, []);
@@ -34,7 +32,7 @@ function PostList() {
         <Form.Group className="text-right">
           <Button variant="primary" type="submit" disabled={isCreatePostButtonLoading}
             onClick={!isCreatePostButtonLoading ? createPost : null}>
-            {isCreatePostButtonLoading ? 'Post...' : 'Post'}>
+            {isCreatePostButtonLoading ? 'Post...' : 'Post'}
           </Button>
         </Form.Group>
         <Post posts={posts}></Post>

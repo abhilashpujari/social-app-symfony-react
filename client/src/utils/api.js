@@ -6,9 +6,7 @@ const api = () => {
     let headers;
 
     if (identity.getToken()) {
-      headers = {
-        'X-Auth-Token': identity.getToken()
-      };
+      axios.defaults.headers.common['X-Auth-Token'] = identity.getToken();
     }
 
     let requestOptions = {

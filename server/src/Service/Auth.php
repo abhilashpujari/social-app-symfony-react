@@ -25,9 +25,13 @@ class Auth
      */
     protected $fullName;
     /**
-     * @var string
+     * @var int
      */
     protected $id;
+    /**
+     * @var boolean
+     */
+    protected $isActive;
     /**
      * @var
      */
@@ -52,6 +56,7 @@ class Auth
             $this->expiresAt = $decodedToken['exp'];
             $this->fullName = $decodedToken['fullName'];
             $this->id = $decodedToken['id'];
+            $this->isActive = $decodedToken['isActive'];
             $this->roles = $decodedToken['roles'];
         }
     }
@@ -81,19 +86,11 @@ class Auth
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isAuthenticated()
-    {
-        return ($this->roles && (!in_array(User::ROLE_GUEST, $this->roles)));
     }
 
     /**
@@ -102,6 +99,22 @@ class Auth
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAuthenticated()
+    {
+        return ($this->roles && (!in_array(User::ROLE_GUEST, $this->roles)) && $this->isActive);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 
     /**
@@ -114,7 +127,8 @@ class Auth
             return $this->jwtEncoder->encode([
                 'fullName' => $this->getFullName(),
                 'id' => $this->getId(),
-                'roles' => $this->getRoles()
+                'roles' => $this->getRoles(),
+                'isActive' => $this->getIsActive()
             ]
             );
         } else {

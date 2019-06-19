@@ -71,7 +71,7 @@ class PostController extends BaseController
         $em->flush();
 
         $serializer = [
-            'body', 'id', 'likeCount', 'dislikeCount', 'likes' => ['user' => ['id', 'fullName'], 'isLiked'],
+            'content', 'id', 'likeCount', 'dislikeCount', 'likes' => ['user' => ['id', 'fullName'], 'isLiked'],
             'creationDate', 'user' => ['id', 'fullName']
         ];
 
@@ -109,7 +109,7 @@ class PostController extends BaseController
 
         $serializer = ($request->get('serializer', null))
             ?: [
-                'body', 'id', 'likeCount', 'dislikeCount', 'likes' => ['user' => ['id', 'fullName'], 'isLiked'],
+                'content', 'id', 'likeCount', 'dislikeCount', 'likes' => ['user' => ['id', 'fullName'], 'isLiked'],
                 'creationDate', 'user' => ['id', 'fullName']
             ];
 

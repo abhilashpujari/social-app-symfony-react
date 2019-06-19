@@ -6,10 +6,10 @@ function Post(props) {
   return (
     <div>
       {posts && posts.map((post) =>
-        <Card>
+        <Card key={post.id}>
           <Card.Body>
             <Card.Text>
-              {post.title}
+              {post.content}
             </Card.Text>
           </Card.Body>
         </Card>
