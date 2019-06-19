@@ -129,8 +129,7 @@ class Auth
                 'id' => $this->getId(),
                 'roles' => $this->getRoles(),
                 'isActive' => $this->getIsActive()
-            ]
-            );
+            ]);
         } else {
             throw new HttpAuthenticationTimeoutException('Authentication timeout!!!');
         }
