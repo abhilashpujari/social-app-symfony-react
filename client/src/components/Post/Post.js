@@ -1,18 +1,20 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, FormGroup } from 'react-bootstrap';
 
 function Post(props) {
   const { posts } = props;
   return (
     <div>
       {posts && posts.map((post) =>
-        <Card key={post.id}>
-          <Card.Body>
-            <Card.Text>
-              {post.content}
-            </Card.Text>
-          </Card.Body>
-        </Card>
+        <FormGroup key={post.id}>
+          <Card>
+            <Card.Body>
+              <Card.Text>
+                {post.content}
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </FormGroup>
       )}
 
     </div>

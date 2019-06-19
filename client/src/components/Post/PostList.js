@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form } from 'react-bootstrap';
 
 import Post from './Post';
 import config from '../../config/local';
 import flashMessenger from '../../utils/flashMessenger';
 import api from '../../utils/api';
+import AddPost from './AddPost';
 
 function PostList() {
-  const [posts, setPost] = useState([]);
-  const [isCreatePostButtonLoading, setCreatePostButtonLoading] = useState(false);
-  const createPost = (e) => {
-    e.preventDefault();
+  const [posts, setPosts] = useState([]);
+  
+  addPost = (post) => {
+    setPosts([...posts, post]);
   }
 
   useEffect(() => {
     api
       .get(`${config.endpoints.api}`, '/post')
       .then((response) => {
-        setPost(response.data);
+        setPosts(response.data);
       }).catch(error => {
         flashMessenger.show('error', error.message);
       });
@@ -25,18 +25,8 @@ function PostList() {
 
   return (
     <div>
-      <Form>
-        <Form.Group>
-          <Form.Control as="textarea" rows="8" />
-        </Form.Group>
-        <Form.Group className="text-right">
-          <Button variant="primary" type="submit" disabled={isCreatePostButtonLoading}
-            onClick={!isCreatePostButtonLoading ? createPost : null}>
-            {isCreatePostButtonLoading ? 'Post...' : 'Post'}
-          </Button>
-        </Form.Group>
-        <Post posts={posts}></Post>
-      </Form>
+      <AddPost addPost={addPost}></AddPost>
+      <Post posts={posts}></Post>
     </div >
   )
 }
