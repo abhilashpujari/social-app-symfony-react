@@ -34,11 +34,11 @@ class PostRepository extends ServiceEntityRepository
         $qb->select("p")
             ->from(Post::class, "p");
 
-        $query = $qb->getQuery();
-
         $criteriaParser = new CriteriaParser($qb, $criteria, $this->getMapper());
         $criteriaParser->parse();
 
+        $query = $qb->getQuery();
+        
         return ($pagination)
             ? $pagination->getPaginationData($query, false)
             : ['result' => $query->getResult()];

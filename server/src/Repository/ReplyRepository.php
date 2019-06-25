@@ -34,13 +34,14 @@ class ReplyRepository extends ServiceEntityRepository
         $qb->select("r")
             ->from(Reply::class, "r")
             ->leftJoin(
-                "r.comment", "comment"
+                "r.comment",
+                "comment"
             );
-
-        $query = $qb->getQuery();
 
         $criteriaParser = new CriteriaParser($qb, $criteria, $this->getMapper());
         $criteriaParser->parse();
+
+        $query = $qb->getQuery();
 
         return ($pagination)
             ? $pagination->getPaginationData($query, true)

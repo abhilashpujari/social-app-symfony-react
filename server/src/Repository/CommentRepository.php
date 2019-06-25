@@ -33,16 +33,18 @@ class CommentRepository extends ServiceEntityRepository
 
         $qb->select("c")
             ->from(
-                Comment::class, "c"
+                Comment::class,
+                "c"
             )
             ->leftJoin(
-                "c.post", "post"
+                "c.post",
+                "post"
             );
-
-        $query = $qb->getQuery();
 
         $criteriaParser = new CriteriaParser($qb, $criteria, $this->getMapper());
         $criteriaParser->parse();
+
+        $query = $qb->getQuery();
 
         return ($pagination)
             ? $pagination->getPaginationData($query, true)
@@ -50,8 +52,8 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     protected function getMapper()
     {
         return [

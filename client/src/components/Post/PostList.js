@@ -8,9 +8,9 @@ import AddPost from './AddPost';
 
 function PostList() {
   const [posts, setPosts] = useState([]);
-  
-  addPost = (post) => {
-    setPosts([...posts, post]);
+
+  const addPost = (post) => {
+    setPosts([post, ...posts]);
   }
 
   useEffect(() => {
@@ -26,7 +26,9 @@ function PostList() {
   return (
     <div>
       <AddPost addPost={addPost}></AddPost>
-      <Post posts={posts}></Post>
+      {posts && posts.map((post) =>
+        <Post post={post}></Post>
+      )}
     </div >
   )
 }

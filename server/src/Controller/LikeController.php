@@ -88,7 +88,7 @@ class LikeController extends BaseController
         }
 
         if ($post->getUser()->getId() === $identity->getId()) {
-            throw new HttpBadRequestException('Your can\'t like your own post');
+            throw new HttpBadRequestException('Your can\'t like\dislike your own post');
         }
 
         /** @var Post $post */
@@ -101,8 +101,8 @@ class LikeController extends BaseController
             $postLike->setPost($post);
         } else {
             if ($postLike->getIsLiked() == $isLiked) {
-                if ($isLiked)  {
-                    throw new HttpBadRequestException('You already like this post');
+                if ($isLiked) {
+                    throw new HttpBadRequestException('You already liked this post');
                 } else {
                     throw new HttpBadRequestException('Your already disliked this post');
                 }
