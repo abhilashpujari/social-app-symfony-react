@@ -10,6 +10,9 @@ use Ramsey\Uuid\Uuid;
  */
 class CommonHelper
 {
+    /**
+     * @return string
+     */
     public static function generateUuid()
     {
         return Uuid::uuid1()->toString();
