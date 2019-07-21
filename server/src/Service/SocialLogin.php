@@ -67,7 +67,7 @@ class SocialLogin
         ]);
 
         try {
-            $response = $fb->get('/me?fields=id,email,name', $token);
+            $response = $fb->get('/me?fields=id,email,first_name,last_name', $token);
         } catch(FacebookResponseException $e) {
             throw new HttpUnauthorizedException('Graph returned an error: ' . $e->getMessage());
         } catch(FacebookSDKException $e) {
@@ -79,8 +79,8 @@ class SocialLogin
         return (object)[
             'id' => $user['id'],
             'email' => $user['email'],
-            'firstName' => $user['name'] ? $user['name'] : $user['email'],
-            'lastName' => 'NA'
+            'firstName' => $user['first_name'] ? $user['first_name'] : $user['email'],
+            'lastName' => $user['last_name'] ? $user['last_name'] : 'NA'
         ];
     }
 }
