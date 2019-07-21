@@ -37,4 +37,5 @@ security:
        - { path: ^/v1.0/forgot-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
        - { path: ^/v1.0/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
        - { path: ^/v1.0/reset-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+       - { path: ^/v1.0/social-login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
        - { path: ^/v1.0, roles: IS_AUTHENTICATED_FULLY }

@@ -67,7 +67,7 @@ class User
     private $lastAccessTime;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $password;
 
@@ -80,6 +80,16 @@ class User
      * @ORM\Column(type="boolean")
      */
     private $isActive = true;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $socialProvider;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $socialId;
 
     /**
      * User constructor.
@@ -211,6 +221,30 @@ class User
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getSocialProvider(): ?string
+    {
+        return $this->socialProvider;
+    }
+
+    public function setSocialProvider(string $socialProvider): self
+    {
+        $this->socialProvider = $socialProvider;
+
+        return $this;
+    }
+
+    public function getSocialId(): ?string
+    {
+        return $this->socialId;
+    }
+
+    public function setSocialId(string $socialId): self
+    {
+        $this->socialId = $socialId;
 
         return $this;
     }

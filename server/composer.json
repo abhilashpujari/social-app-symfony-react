@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/annotations": "^1.6",
+        "google/apiclient": "^2.0",
         "lexik/jwt-authentication-bundle": "^2.6",
         "myclabs/php-enum": "^1.7",
         "nelmio/api-doc-bundle": "^3.4",

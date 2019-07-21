@@ -4,7 +4,7 @@ import {
   Form,
   Button
 } from 'react-bootstrap';
-
+import { GoogleLogin } from 'react-google-login';
 import { Link } from "react-router-dom";
 
 import '../../styles/components/login.scss';
@@ -41,6 +41,21 @@ class Login extends Component {
     });
   }
 
+  responseGoogle = (response) => {
+    console.log(response);
+    if (response && response.tokenId) {
+      const { tokenId } = response;
+
+      api
+        .post(`${config.endpoints.api}`, '/social-login', { provider_type: 'google', token: tokenId })
+        .then((response) => {
+          window.location.href = routeConfig.home;
+        }).catch(error => {
+          flashMessenger.show('error', error.message);
+        });
+    }
+  }
+
   login = (e) => {
     e.preventDefault();
     let validator = new Validator(this.state.formData, this.validationRules);
@@ -73,6 +88,14 @@ class Login extends Component {
             <div className="logo__container text-center">
               <img className="logo" src="/logo.png" alt="Logo" />
             </div>
+            <Form.Group className="text-center">
+              <GoogleLogin
+                clientId={config.google.clientId}
+                buttonText="Login with Google"
+                onSuccess={this.responseGoogle}
+                onFailure={this.responseGoogle}
+              />
+            </Form.Group>
             <Form className="login__form">
               <Form.Group controlId="email">
                 <Form.Label>Email</Form.Label>
