@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/annotations": "^1.6",
+        "facebook/graph-sdk": "^5.7",
         "google/apiclient": "^2.0",
         "lexik/jwt-authentication-bundle": "^2.6",
         "myclabs/php-enum": "^1.7",

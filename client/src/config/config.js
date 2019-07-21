@@ -5,6 +5,9 @@ let config = {
   },
   google: {
     clientId: ''
+  },
+  facebook: {
+    appId: ''
   }
 };
 

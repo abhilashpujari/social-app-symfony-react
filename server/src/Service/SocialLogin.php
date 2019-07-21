@@ -5,6 +5,9 @@ namespace App\Service;
 use App\Exception\HttpBadRequestException;
 use App\Exception\HttpUnauthorizedException;
 use Google_Client;
+use Facebook\Facebook;
+use Facebook\Exceptions\FacebookResponseException;
+use Facebook\Exceptions\FacebookSDKException;
 
 /**
  * Class SocialLogin
@@ -22,6 +25,8 @@ class SocialLogin
     {
         if ($type === 'google') {
             return $this->verifyGoogleUser($token);
+        } elseif ($type === 'facebook') {
+            return $this->verifyFacebookUser($token);
         } else {
             throw new HttpBadRequestException('Invalid Social Provider');
         }
@@ -46,5 +51,36 @@ class SocialLogin
         } else {
             throw new HttpUnauthorizedException('Unauthorized user!!!');
         }
+    }
+
+    /**
+     * @param $token
+     * @return array
+     * @throws HttpUnauthorizedException
+     */
+    private function verifyFacebookUser($token)
+    {
+        $fb = new Facebook([
+            'app_id' => getenv('FACEBOOK_APP_ID'),
+            'app_secret' => getenv('FACEBOOK_APP_SECRET'),
+            'default_graph_version' => 'v2.10',
+        ]);
+
+        try {
+            $response = $fb->get('/me?fields=id,email,name', $token);
+        } catch(FacebookResponseException $e) {
+            throw new HttpUnauthorizedException('Graph returned an error: ' . $e->getMessage());
+        } catch(FacebookSDKException $e) {
+            throw new HttpUnauthorizedException('Facebook SDK returned an error: ' . $e->getMessage());
+        }
+
+        $user = $response->getGraphUser();
+
+        return (object)[
+            'id' => $user['id'],
+            'email' => $user['email'],
+            'firstName' => $user['name'] ? $user['name'] : $user['email'],
+            'lastName' => 'NA'
+        ];
     }
 }

@@ -27,7 +27,7 @@ function PostList() {
     <div>
       <AddPost addPost={addPost}></AddPost>
       {posts && posts.map((post) =>
-        <Post post={post}></Post>
+        <Post post={post} key={post.id}></Post>
       )}
     </div >
   )

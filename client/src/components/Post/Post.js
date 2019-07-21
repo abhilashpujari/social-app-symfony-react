@@ -27,30 +27,29 @@ function Post(props) {
   }
 
   return (
-    <div>
-      <FormGroup key={post.id}>
+    <>
+      <FormGroup>
         <Card>
           <Card.Body>
             <Card.Text>
               {post.content}
-              <div>
-                <span>
-                  <FontAwesomeIcon icon={faThumbsUp} title="Like" onClick={() => likePost(post.id, 'like')} />{' ' + values.likeCount}
-                </span>
+              <br />
+              <span>
+                <FontAwesomeIcon icon={faThumbsUp} title="Like" onClick={() => likePost(post.id, 'like')} />{' ' + values.likeCount}
+              </span>
 
-                <span>
-                  {' '}
-                  <FontAwesomeIcon icon={faThumbsDown} title="Dislike" onClick={() => likePost(post.id, 'dislike')} />{' ' + values.dislikeCount}
-                </span>
-                <div>
-                  <a href=":void">Show comments</a>
-                </div>
-              </div>
+              <span>
+                {' '}
+                <FontAwesomeIcon icon={faThumbsDown} title="Dislike" onClick={() => likePost(post.id, 'dislike')} />{' ' + values.dislikeCount}
+              </span>
+              <br />
+              <a href=":void">Show comments</a>
+
             </Card.Text>
           </Card.Body>
         </Card>
       </FormGroup>
-    </div>
+    </>
   )
 }
 

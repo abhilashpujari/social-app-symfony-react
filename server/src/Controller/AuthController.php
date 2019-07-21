@@ -184,6 +184,8 @@ class AuthController extends BaseController
         if (!$user) {
             $user = new User();
             $user->setEmail($socialUser->email);
+            $user->setFirstName($socialUser->firstName);
+            $user->setLastName($socialUser->lastName);
             $user->setRoles([User::ROLE_USER]);
         }
 

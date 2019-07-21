@@ -4,6 +4,7 @@ import {
   Form,
   Button
 } from 'react-bootstrap';
+import FacebookLogin from 'react-facebook-login';
 import { GoogleLogin } from 'react-google-login';
 import { Link } from "react-router-dom";
 
@@ -41,19 +42,31 @@ class Login extends Component {
     });
   }
 
+  responseFacebook = (response) => {
+    console.log(response);
+
+    if (response && response.accessToken) {
+      const { accessToken } = response;
+      this.socialLogin({ provider_type: 'facebook', token: accessToken });
+    }
+  }
+
   responseGoogle = (response) => {
     console.log(response);
     if (response && response.tokenId) {
       const { tokenId } = response;
-
-      api
-        .post(`${config.endpoints.api}`, '/social-login', { provider_type: 'google', token: tokenId })
-        .then((response) => {
-          window.location.href = routeConfig.home;
-        }).catch(error => {
-          flashMessenger.show('error', error.message);
-        });
+      this.socialLogin({ provider_type: 'google', token: tokenId });
     }
+  }
+
+  socialLogin(data) {
+    api
+      .post(`${config.endpoints.api}`, '/social-login', data)
+      .then((response) => {
+        window.location.href = routeConfig.home;
+      }).catch(error => {
+        flashMessenger.show('error', error.message);
+      });
   }
 
   login = (e) => {
@@ -95,6 +108,14 @@ class Login extends Component {
                 onSuccess={this.responseGoogle}
                 onFailure={this.responseGoogle}
               />
+            </Form.Group>
+            <Form.Group className="text-center">
+              <FacebookLogin
+                appId={config.facebook.appId}
+                autoLoad={false}
+                fields="name,email"
+                cssClass="btn__login--facebook"
+                callback={this.responseFacebook} />
             </Form.Group>
             <Form className="login__form">
               <Form.Group controlId="email">
