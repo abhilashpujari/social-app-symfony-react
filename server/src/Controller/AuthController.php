@@ -142,6 +142,7 @@ class AuthController extends BaseController
      *     @SWG\Schema(
      *     type="object",
      *         @SWG\Property(property="tokenId", type="string")
+     *         @SWG\Property(property="provider_type", type="string")
      *     )
      * )
      *
